@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>路线详情</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/route-detail.css">
+</head>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-3.3.1.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<!--导入布局js，共享header和footer-->
+<script type="text/javascript" src="js/include.js"></script>
+<script type="text/javascript" src="js/getParameter.js"></script>
+
+<script>
+    $(document).ready(function() {
+        goImg();
+
+
+        //自动播放
+        // var timer = setInterval("auto_play()", 5000);
+    });
+
+    function goImg() {
+        //焦点图效果
+        //点击图片切换图片
+        $('.little_img').on('mousemove', function() {
+            $('.little_img').removeClass('cur_img');
+            var big_pic = $(this).data('bigpic');
+            $('.big_img').attr('src', big_pic);
+            $(this).addClass('cur_img');
+        });
+        //上下切换
+        var picindex = 0;
+        var nextindex = 4;
+        $('.down_img').on('click',function(){
+            var num = $('.little_img').length;
+            if((nextindex + 1) <= num){
+                $('.little_img:eq('+picindex+')').hide();
+                $('.little_img:eq('+nextindex+')').show();
+                picindex = picindex + 1;
+                nextindex = nextindex + 1;
+            }
+        });
+        $('.up_img').on('click',function(){
+            var num = $('.little_img').length;
+            if(picindex > 0){
+                $('.little_img:eq('+(nextindex-1)+')').hide();
+                $('.little_img:eq('+(picindex-1)+')').show();
+                picindex = picindex - 1;
+                nextindex = nextindex - 1;
+            }
+        });
+    }
+
+    //自动轮播方法
+    function auto_play() {
+        var cur_index = $('.prosum_left dd').find('a.cur_img').index();
+        cur_index = cur_index - 1;
+        var num = $('.little_img').length;
+        var max_index = 3;
+        if ((num - 1) < 3) {
+            max_index = num - 1;
+        }
+        if (cur_index < max_index) {
+            var next_index = cur_index + 1;
+            var big_pic = $('.little_img:eq(' + next_index + ')').data('bigpic');
+            $('.little_img').removeClass('cur_img');
+            $('.little_img:eq(' + next_index + ')').addClass('cur_img');
+            $('.big_img').attr('src', big_pic);
+        } else {
+            var big_pic = $('.little_img:eq(0)').data('bigpic');
+            $('.little_img').removeClass('cur_img');
+            $('.little_img:eq(0)').addClass('cur_img');
+            $('.big_img').attr('src', big_pic);
+        }
+    }
+    //定义一个页面加载完执行函数
+    $(function () {
+        //1.获取这个rid,这样我们就从这个页面中获取到这个rid,注意这个rid也就是我们页面中点击查看详情时候的请求参数
+        //这里的这个getParameter方法中的参数名必须要和我们a标签的href跳转页面的地址后面拼接的参数名保持一致。否则的
+        // 话我们就在前台页面中获取不到数据，即如果var rid = getParameter("ridStr");这样我们的参数名中的这个参数
+        // ridStr和我们的这个a标签的href属性的变量名rid不一致所以就会导致出错，这一点我们需要注意
+        var rid = getParameter("rid");
+        alert(rid);
+
+        //2.发送ajax请求
+        $.get("route/findOne",{ridStr:rid},function (data) {
+            //alert(JSON.stringify(data));
+            /*
+            * {
+                "rid": 1,
+                "rname": "【旅展 半价特惠 重走丝路•漫游宁夏 双飞4天】银川西部影视城 穆民新村 中卫沙坡头【品美酒 回族学唱花儿 感悟民俗】",
+                "price": 999,
+                "routeIntroduce": "走进【宁夏沙坡头】，感受西北大漠风情、体会“大漠孤烟直，长河落日圆”的塞上风光！",
+                "rflag": "1",
+                "rdate": "2018-02-09 01:13:16",
+                "isThemeTour": "0",
+                "count": 0,
+                "cid": 1,
+                "rimage": "img/product/small/m304b69a4c8328f7d6b8d5dadef020fe07.jpg",
+                "sid": 1,
+                "sourceId": "23677",
+                "category": null,
+                "seller": {
+                    "sid": 1,
+                    "sname": "黑马程序员",
+                    "consphone": "12345678901",
+                    "address": "传智播客javaEE学院"
+                },
+                "routeImgList": [
+                    {
+                        "rgid": 1,
+                        "rid": 1,
+                        "bigPic": "img/product/size4/m421d66d4446940b1c80a0092c91e75184.jpg",
+                        "smallPic": "img/product/size2/m221d66d4446940b1c80a0092c91e75184.jpg"
+                    },
+                    {
+                        "rgid": 2,
+                        "rid": 1,
+                        "bigPic": "img/product/size4/m4227f0cde1b021a77c56c1c18a8f2e7fd.jpg",
+                        "smallPic": "img/product/size2/m2227f0cde1b021a77c56c1c18a8f2e7fd.jpg"
+                    },
+                    {
+                        "rgid": 3,
+                        "rid": 1,
+                        "bigPic": "img/product/size4/m412cf97538027a813a4fb0bd6980a7fea.jpg",
+                        "smallPic": "img/product/size2/m212cf97538027a813a4fb0bd6980a7fea.jpg"
+                    },
+                    {
+                        "rgid": 4,
+                        "rid": 1,
+                        "bigPic": "img/product/size4/m47fe3031a3df75ab5e6711ae2338c18f7.jpg",
+                        "smallPic": "img/product/size2/m27fe3031a3df75ab5e6711ae2338c18f7.jpg"
+                    }
+                  ]
+            }*/
+            //3.解析数据填充到html中
+            //3.1首先我们填充简单数据，填充这个旅游表中的数据
+            $("#rname").html(data.rname);
+            $("#rname2").html(data.rname);
+            $("#routeIntroduce").html(data.routeIntroduce);
+            $("#price").html('¥'+data.price);
+            //3.2填充这个商家表中的数据
+            $("#sname").html(data.seller.sname);
+            $("#consphone").html(data.seller.consphone);
+            $("#address").html(data.seller.address);
+            $("#favoriteCount").html("收藏"+data.count+"次");
+
+            //3.3进行页面中最复杂的数据填充也就是填充我们的图片信息
+            /*
+            * <dd>
+                    <a class="up_img up_img_disable"></a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m40920d0669855e745d97f9ad1df966ebb.jpg">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m20920d0669855e745d97f9ad1df966ebb.jpg">
+                    </a>
+                    <a title="" class="little_img cur_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m49788843d72171643297ccc033d9288ee.jpg">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m29788843d72171643297ccc033d9288ee.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m4531a8dbceefa2c44e6d0e35627cd2689.jpg">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m2531a8dbceefa2c44e6d0e35627cd2689.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m46d8cb900e9f6c0a762aca19eae40c00c.jpg">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m26d8cb900e9f6c0a762aca19eae40c00c.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m45ea00f6eba562a767b5095bbf8cffe07.jpg" style="display:none;">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m25ea00f6eba562a767b5095bbf8cffe07.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m4265ec488cd1bc7ce749bc8c9b34b87bc.jpg" style="display:none;">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m2265ec488cd1bc7ce749bc8c9b34b87bc.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m4e7e964909d7dd1a9f6e5494d4dc0c847.jpg" style="display:none;">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m2e7e964909d7dd1a9f6e5494d4dc0c847.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m467db00e1b76718fab0fe8b96e10f4d35.jpg" style="display:none;">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m267db00e1b76718fab0fe8b96e10f4d35.jpg">
+                    </a>
+                    <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m487bbbc6e43eba6aa6a36cc1a182f7a20.jpg" style="display:none;">
+                        <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m287bbbc6e43eba6aa6a36cc1a182f7a20.jpg">
+                    </a>
+                    <a class="down_img down_img_disable" style="margin-bottom: 0;"></a>
+                </dd>
+                */
+            /*定义一个字符串并且初始值为我们的这个页面中的起始a标签中的内容，因为这里我们a标签中的
+            * 属性都是使用的双引号，所以我们这里外边定义的list使用单引号。之后我们遍历取出
+            * data.routeImgList的每一个元素，有几个元素就添加几个a标签。*/
+            var list='<a class="up_img up_img_disable"></a>';
+            for (var i = 0; i < data.routeImgList.length; i++) {
+                var astr ;
+                if(i >= 4){
+                    astr = '<a title="" class="little_img" data-bigpic="'+data.routeImgList[i].bigPic+'" style="display:none;">\n' +
+                        '                        <img src="'+data.routeImgList[i].smallPic+'">\n' +
+                        '                    </a>';
+                }else{
+                    astr = '<a title="" class="little_img" data-bigpic="'+data.routeImgList[i].bigPic+'">\n' +
+                        '                        <img src="'+data.routeImgList[i].smallPic+'">\n' +
+                        '                    </a>';
+                }
+               list +=astr;
+                
+            }
+
+           list+='<a class="down_img down_img_disable" style="margin-bottom: 0;"></a>';
+            //追加字符串内容到这个页面的dom标签元素中。
+            $("#dd").html(list);
+            //调用加载页面图片方法。
+            goImg();
+        });
+
+        var cid = getParameter("cid");
+        alert(cid);
+        /*这里的这个ajax请求主要是获取我们页面详情展示页中的导航栏中的这个路线名称*/
+        $.get("Category/findCategory",{cid:cid},function (data) {
+            alert(data);
+            alert(JSON.stringify(data));
+            $("#firstguide").html(data.cname);
+        })
+    });
+    $(function () {
+        // 发送请求，判断用户是否收藏过该线路
+        var rid = getParameter("rid");
+        $.get("route/isFavorite",{rid:rid},function (flag) {
+            if(flag){
+                // 用户已经收藏过
+                //<a  class="btn already" disabled="disabled">
+                //设置收藏按钮的样式
+                $("#favorite").addClass("already");
+                $("#favorite").attr("disabled","disabled");
+
+                //删除按钮的点击事件
+                $("#favorite").removeAttr("onclick");
+            }else{
+                // 用户没有收藏
+            }
+        });
+
+
+
+    });
+
+    //当我们在页面中点击收藏按钮，向服务器后端发送异步ajax请求进行旅游线路收藏
+   function routefavorite () {
+       /*1.在进行这个旅游线路的收藏之前我们需要首先判断用户有没有登录，这里我们如何判断
+       * 用户有没有登录，我们可以先服务器后台代码发送ajax请求，注意这里我们请求的是
+       * 我们的userServlet中的这个find方法，如果该方法写回到前台页面的user对象为空的
+       * 话，即user对象里面没有用户，也就是说用户没有登录，如果说写回的user对象有值的话，
+       * 那么就是证明用户已经成功登录， */
+
+       //1.1 首先获取到页面需要先服务器端传递的参数
+       // var rid = getParameter("rid");
+       /*因为这个方法我们不需要传递任何参数，所以我们直接传递一个空的json给服务器端，
+       这里的data也就是服务器端返回的user对象*/
+       $.get("user/find", {}, function (user) {
+           alert(user);//[object Object]
+           alert(JSON.stringify(user));//user对象的字符串表示法
+           if(user){
+               //用户已经登录 ,向服务器端后台代码发送异步的ajax请求
+               /*在向服务器端发送异步的ajax请求的时候我们需要向服务器端
+               *传递参数也就是我们的旅游线路的id即rid,这里我们还是通过这个
+               * getparameter方法获取页面传递到服务器端的请求参数rid*/
+               var rid = getParameter("rid");
+               $.get("route/addFavorite",{rid:rid},function () {
+                   alert("旅游线路收藏成功");
+                  location.reload();
+
+               });
+
+           }else{
+              //用户没有登录我们进行页面的跳转，跳转到这个登录页面
+               alert("您尚未登录，请登录");
+               location.href="http://localhost:8088/travel/login.html";
+           }
+
+
+       });
+   };
+
+</script>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+    <!-- 详情 start -->   
+    <div class="wrap">
+        <!--这里也就是我们页面中大图片上方的指示信息，我们其实可以把这部分的数据也换成我们数据库中返回的数据
+        这里我们的国内游应该根据这个我们rid查询出的route对象中的cid来查询我们tb_categeory旅游分类表中的这个
+        cname进行页面的展示-->
+        <div class="bread_box">
+            <a href="http://localhost:8088/travel/index.html">首页</a>
+            <span> &gt;</span>
+            <a href="#" id="firstguide"></a><span> &gt;</span>
+            <a href="#" id="rname2"></a>
+        </div>
+        <div class="prosum_box">
+            <dl class="prosum_left">
+                <dt>
+                    <img alt="" class="big_img" src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m49788843d72171643297ccc033d9288ee.jpg">
+                </dt>
+                <dd id="dd">
+                    <!-- <a class="up_img up_img_disable"></a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m40920d0669855e745d97f9ad1df966ebb.jpg">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m20920d0669855e745d97f9ad1df966ebb.jpg">
+                     </a>
+                     <a title="" class="little_img cur_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m49788843d72171643297ccc033d9288ee.jpg">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m29788843d72171643297ccc033d9288ee.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m4531a8dbceefa2c44e6d0e35627cd2689.jpg">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m2531a8dbceefa2c44e6d0e35627cd2689.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m46d8cb900e9f6c0a762aca19eae40c00c.jpg">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m26d8cb900e9f6c0a762aca19eae40c00c.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m45ea00f6eba562a767b5095bbf8cffe07.jpg" style="display:none;">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m25ea00f6eba562a767b5095bbf8cffe07.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m4265ec488cd1bc7ce749bc8c9b34b87bc.jpg" style="display:none;">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m2265ec488cd1bc7ce749bc8c9b34b87bc.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m4e7e964909d7dd1a9f6e5494d4dc0c847.jpg" style="display:none;">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m2e7e964909d7dd1a9f6e5494d4dc0c847.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m467db00e1b76718fab0fe8b96e10f4d35.jpg" style="display:none;">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m267db00e1b76718fab0fe8b96e10f4d35.jpg">
+                     </a>
+                     <a title="" class="little_img" data-bigpic="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size4/201703/m487bbbc6e43eba6aa6a36cc1a182f7a20.jpg" style="display:none;">
+                         <img src="http://www.jinmalvyou.com/Public/uploads/goods_img/img_size2/201703/m287bbbc6e43eba6aa6a36cc1a182f7a20.jpg">
+                     </a>
+                     <a class="down_img down_img_disable" style="margin-bottom: 0;"></a>-->
+                 </dd>
+            </dl>
+            <div class="prosum_right">
+               <p class="pros_title" id="rname"></p>
+                <p class="hot" id="routeIntroduce"></p>
+                <div class="pros_other">
+                    <p>经营商家  ：<span id="sname"></span></p>
+                    <p>咨询电话 : <span id="consphone"></span></p>
+                    <p>地址 ： <span id="address"></span></p>
+                </div>
+                <div class="pros_price">
+                    <p class="price"><strong id="price">¥2699.00</strong><span>起</span></p>
+                    <p class="collect">
+                        <a class="btn" id="favorite" onclick="routefavorite()"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
+
+                        <!--<a  class="btn already" disabled="disabled"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>-->
+                        <span id="favoriteCount"></span>
+                    </p>
+                </div>        
+            </div>
+        </div>
+        <div class="you_need_konw">
+            <span>旅游须知</span>
+            <div class="notice">
+                <p>1、旅行社已投保旅行社责任险。建议游客购买旅游意外保险 <br>
+
+                <p>2、旅游者参加打猎、潜水、海边游泳、漂流、滑水、滑雪、滑草、蹦极、跳伞、滑翔、乘热气球、骑马、赛车、攀岩、水疗、水上飞机等属于高风险性游乐项目的，敬请旅游者务必在参加前充分了解项目的安全须知并确保身体状况能适应此类活动；如旅游者不具备较好的身体条件及技能，可能会造成身体伤害。</p>
+
+                <p>3、参加出海活动时，请务必穿着救生设备。参加水上活动应注意自己的身体状况，有心脏病、冠心病、高血压、感冒、发烧和饮酒及餐后不可以参加水上活动及潜水。在海里活动时，严禁触摸海洋中各种鱼类，水母，海胆，珊瑚等海洋生物，避免被其蛰伤。老人和小孩必须有成年人陪同才能参加合适的水上活动。在海边游玩时，注意保管好随身携带的贵重物品。</p>
+
+                <p>4、根据中国海关总署的规定，旅客在境外购买的物品，在进入中国海关时可能需要征收关税。详细内容见《中华人民共和国海关总署公告2010年第54号文件》。</p>
+
+                <p>5、建议出发时行李托运，贵重物品、常用物品、常用药品、御寒衣物等请随身携带，尽量不要托运。行李延误属于不可抗力因素，我司将全力协助客人跟进后续工作，但我司对此不承担任何责任。</p>
+                <p>1、旅行社已投保旅行社责任险。建议游客购买旅游意外保险 <br>
+
+                <p>2、旅游者参加打猎、潜水、海边游泳、漂流、滑水、滑雪、滑草、蹦极、跳伞、滑翔、乘热气球、骑马、赛车、攀岩、水疗、水上飞机等属于高风险性游乐项目的，敬请旅游者务必在参加前充分了解项目的安全须知并确保身体状况能适应此类活动；如旅游者不具备较好的身体条件及技能，可能会造成身体伤害。</p>
+
+                <p>3、参加出海活动时，请务必穿着救生设备。参加水上活动应注意自己的身体状况，有心脏病、冠心病、高血压、感冒、发烧和饮酒及餐后不可以参加水上活动及潜水。在海里活动时，严禁触摸海洋中各种鱼类，水母，海胆，珊瑚等海洋生物，避免被其蛰伤。老人和小孩必须有成年人陪同才能参加合适的水上活动。在海边游玩时，注意保管好随身携带的贵重物品。</p>
+
+                <p>4、根据中国海关总署的规定，旅客在境外购买的物品，在进入中国海关时可能需要征收关税。详细内容见《中华人民共和国海关总署公告2010年第54号文件》。</p>
+
+                <p>5、建议出发时行李托运，贵重物品、常用物品、常用药品、御寒衣物等请随身携带，尽量不要托运。行李延误属于不可抗力因素，我司将全力协助客人跟进后续工作，但我司对此不承担任何责任。</p>
+            </div>           
+        </div>
+    </div>
+    <!-- 详情 end -->
+
+    <!--引入头部-->
+    <div id="footer"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>黑马旅游-搜索</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/search.css">
+
+   <script type="text/javascript" src="js/getParameter.js"></script>
+
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+           /* var search = location.search;
+            //alert(search);//?id=5
+            // 切割字符串，拿到第二个值
+            var cid = search.split("=")[1];*/
+           var cid=getParameter("cid");
+           alert(cid);
+           var rname=getParameter("rname");
+           //如果说rname不为null或者""
+           if(rname){
+               //我们需要对其进行解码
+               rname=window.decodeURIComponent(rname);
+           }
+            //alert(cid);
+            //alert(rname);
+            //当页面加载完成之后就会调用这个load方法，发送ajax异步请求加载数据
+            load(cid,null,rname);
+
+
+        });
+
+        function load(cid,currentPage,rname){
+            //alert(cid,currentPage); //1 ,1
+            //当页码加载完成后，发送ajax请求请求我们route/PageQuery方法加载数据，传递cid
+            debugger;
+            alert(rname);
+            if(rname!=null&&rname!=""){
+                $.get("route/pageQuery",{cidStr:cid,currentPageStr:currentPage,rname:rname},function(pb) {
+                    alert(JSON.stringify(pb));
+                    alert(JSON.stringify(pb.list));
+                    //解析pageBean的数据，展示到页面上面
+                    //这里我们要展示到页面上面的数据有两部分第一部分也就是我们的这个List集合中的数据
+                    //第二部分也就是我们的这个分页条的数据展示。这里我们首先来做这个分页条的数据展示
+                    //1.分页条的数据展示
+                    $("#totalpage").html(pb.totalPage);
+                    $("#totalcount").html(pb.totalCount);
+                    /*
+                               <li><a href="">首页</a></li>
+                               <li class="threeword"><a href="#">上一页</a></li>
+                               <li class="curPage"><a href="#">1</a></li>
+                               <li><a href="#">2</a></li>
+                               <li><a href="#">3</a></li>
+                               <li><a href="#">4</a></li>
+                               <li><a href="#">5</a></li>
+                               <li><a href="#">6</a></li>
+                               <li><a href="#">7</a></li>
+                               <li><a href="#">8</a></li>
+                               <li><a href="#">9</a></li>
+                               <li><a href="#">10</a></li>
+                               <li class="threeword"><a href="javascript:;">下一页</a></li>
+                               <li class="threeword"><a href="javascript:;">末页</a></li>
+
+                        */
+                    //定义一个空白字符串用于拼接
+                    var lis = "";
+                    //拼接首页和上一页
+                    var fristPage = ' <li><a href="javascript:load('+cid+',1,\''+rname+'\')">首页</a></li>';
+                    var  beforenbumber=pb.currentPage-1;
+                    var prefixPage;
+                    //如果说我们pb.currentPage当前页面在第一页，这个时候我们点击这个上一页的按钮则不进行页面跳转，我们就还是显示第一页
+                    //这里显示第一页的默认做法我们就可以在load()函数中不传递这个currentPage的值，那么后台就会自动用默认值1
+                    if(beforenbumber<=0){
+                        prefixPage =  '<li class="threeword"><a href="javascript:load('+cid+',1,\''+rname+'\')" >上一页</a></li>';
+                    }else {
+                        //这里是如果我们所在页面还有上一页的情况下，我们就进行这个页面跳转，我们跳转的currentPage也就是我们当前页码减1
+                        prefixPage =  '<li class="threeword"><a href="javascript:load('+cid+','+beforenbumber+',\''+rname+'\')" >上一页</a></li>';
+                    }
+                    lis += fristPage;
+                    lis += prefixPage;
+                    //1.2展示分页页码
+                    //定义一个起始位置和结束位置
+                    /*1.一共展示10个页码，达到这个前5后4的效果
+                    * 2.如果前面不够5个，后边补齐10个
+                    * 3.如果后面不够4个，前边补齐10个*/
+                    var begin;
+                    var end;
+                    //总页码不够10页
+                    if(pb.totalPage<10){
+                        begin=1;
+                        end=pb.totalPage;
+                    }else{
+                        //总页码超过10页
+                        begin=pb.currentPage-5;
+                        end=pb.currentPage+4;
+                        //如果前面不够5个，后边补齐10个
+                        if(begin<1){
+                            begin=1;
+                            end=begin+9;
+                        }
+                        //如果说后面不足4个，前面补齐10个
+                        if(end>pb.totalPage){
+                            begin=pb.totalPage-9;
+                            end=pb.totalPage;
+                        }
+                    }
+
+
+                    //循环遍历取出分页页码
+                    for(var i=begin;i<=end;i++){
+                        //alert(i);
+                        var li;
+                        //这里我们做一个页面的判断我们如果点击的页码就是当前页码我们给其加上一个颜色
+                        if(i==pb.currentPage){
+                            //创建页码的li
+                            li='<li onclick="javascript:load('+cid+','+i+',\''+rname+'\')" class="curPage"><a href="javascript:void(0)">'+i+'</a></li>';
+                        }else {
+
+                            li='<li onclick="javascript:load('+cid+','+i+',\''+rname+'\')" ><a href="javascript:void(0)">'+i+'</a></li>';
+                        }
+                        //拼接字符串
+                        lis +=li;
+                    }
+                    //拼接下一页和末页
+                    var nextnumber=pb.currentPage+1;
+                    //如果说我们的下一页的值小于我们的总页数我们就进行下一页的跳转，否则我们就还是显示最后一页就可以
+                    //这里的总页数我们就是我们服务器端返回的pb对象的totalPage的属性值
+                    if(nextnumber<=pb.totalPage){
+                        var nextPage= '<li class="threeword" onclick="javascript:load('+cid+','+nextnumber+',\''+rname+'\')"><a href="javascript:void(0)">下一页</a></li>';
+                    }else {
+                        //如果说我们的下一页的值小于我们的总页数我们就进行下一页的跳转，否则我们就还是显示最后一页就可以
+                        var nextPage= '<li class="threeword" onclick="javascript:load('+cid+','+pb.totalPage+',\''+rname+'\')"><a href="javascript:void(0)">下一页</a></li>';
+                    }
+
+                    var lastPage='<li class="threeword" onclick="javascript:load('+cid+','+pb.totalPage+',\''+rname+'\')"><a href="javascript:void(0)">末页</a></li>';
+                    lis +=nextPage;
+                    lis +=lastPage;
+                    //将lis内容设置到 ul中，所以这里我们首先要获取到我们的ul标签，利用.html方法
+                    $("#pageNum").html(lis);
+
+                    var lit="";
+                    //遍历数组，将数组中的所有数据进行填充到这个页面的主体部分。
+                    for (var i = 0; i < pb.list.length; i++) {
+                        //获取数组中的每一个list集合中的对象。
+                        /*    {
+                                 "rid": 320,
+                                 "rname": "【3月西藏桃花：西宁+拉萨+林芝+羊卓雍措 三飞一卧8天】布达拉宫 林芝 藏东南桃花沟 鲁朗林海 圣湖巴松措【观青藏铁路景观带】",
+                                 "price": 5699,
+                                 "routeIntroduce": "乘坐青藏铁路精华段“西宁—拉萨”，阶梯式逐渐适应高原环境；走进雅鲁藏布江流域雪山下桃花盛开的【桃花沟】，拍摄醉美雪域桃花；加游西藏三大圣湖之一，西藏最秀美妖艳的湖泊【羊卓雍措】！",
+                                 "rflag": "1",
+                                 "rdate": "2018-02-09 01:13:54",
+                                 "isThemeTour": "0",
+                                 "count": 0,
+                                 "cid": 5,
+                                 "rimage": "img/product/small/m3d4e24bd288c8b9ecbd81d20dbf9fe5bc.jpg",
+                                 "sid": 1,
+                                 "sourceId": "21859",
+                                 "category": null,
+                                 "seller": null,
+                                 "routeImgList": null
+                                 }*/
+                        var route= pb.list[i];
+                        var lits='<li>\n' +
+                            '                            <div class="img"><img src="'+route.rimage+'" style="width: 299px"></div>\n' +
+                            '                            <div class="text1">\n' +
+                            '                                <p>'+route.rname+'</p>\n' +
+                            '                                <br/>\n' +
+                            '                                <p>'+route.routeIntroduce+'</p>\n' +
+                            '                            </div>\n' +
+                            '                            <div class="price">\n' +
+                            '                                <p class="price_num">\n' +
+                            '                                    <span>&yen;</span>\n' +
+                            '                                    <span>'+route.price+'</span>\n' +
+                            '                                    <span>起</span>\n' +
+                            '                                </p>\n' +
+                            '                                <p><a href="route_detail.html?rid='+route.rid+'&cid='+cid+'">查看详情</a></p>\n' +
+                            '                            </div>\n' +
+                            '                        </li>';
+                        lit+=lits;
+
+                    }
+                    $("#route_list").html(lit);
+
+                    //定位到页面顶部
+                    window.scrollTo(0,0);
+                });
+
+
+            }
+            else{
+                $.get("route/pageQuery",{cidStr:cid,currentPageStr:currentPage},function(pb) {
+                    alert(JSON.stringify(pb));
+                    alert(JSON.stringify(pb.list));
+                    //解析pageBean的数据，展示到页面上面
+                    //这里我们要展示到页面上面的数据有两部分第一部分也就是我们的这个List集合中的数据
+                    //第二部分也就是我们的这个分页条的数据展示。这里我们首先来做这个分页条的数据展示
+                    //1.分页条的数据展示
+                    $("#totalpage").html(pb.totalPage);
+                    $("#totalcount").html(pb.totalCount);
+                    /*
+                               <li><a href="">首页</a></li>
+                               <li class="threeword"><a href="#">上一页</a></li>
+                               <li class="curPage"><a href="#">1</a></li>
+                               <li><a href="#">2</a></li>
+                               <li><a href="#">3</a></li>
+                               <li><a href="#">4</a></li>
+                               <li><a href="#">5</a></li>
+                               <li><a href="#">6</a></li>
+                               <li><a href="#">7</a></li>
+                               <li><a href="#">8</a></li>
+                               <li><a href="#">9</a></li>
+                               <li><a href="#">10</a></li>
+                               <li class="threeword"><a href="javascript:;">下一页</a></li>
+                               <li class="threeword"><a href="javascript:;">末页</a></li>
+
+                        */
+                    //定义一个空白字符串用于拼接
+                    var lis = "";
+                    //拼接首页和上一页
+                    var fristPage = ' <li><a href="javascript:load('+cid+',1)">首页</a></li>';
+                    var  beforenbumber=pb.currentPage-1;
+                    var prefixPage;
+                    //如果说我们pb.currentPage当前页面在第一页，这个时候我们点击这个上一页的按钮则不进行页面跳转，我们就还是显示第一页
+                    //这里显示第一页的默认做法我们就可以在load()函数中不传递这个currentPage的值，那么后台就会自动用默认值1
+                    if(beforenbumber<=0){
+                        prefixPage =  '<li class="threeword"><a href="javascript:load('+cid+',1)" >上一页</a></li>';
+                    }else {
+                        //这里是如果我们所在页面还有上一页的情况下，我们就进行这个页面跳转，我们跳转的currentPage也就是我们当前页码减1
+                        prefixPage =  '<li class="threeword"><a href="javascript:load('+cid+','+beforenbumber+')" >上一页</a></li>';
+                    }
+                    lis += fristPage;
+                    lis += prefixPage;
+                    //1.2展示分页页码
+                    //定义一个起始位置和结束位置
+                    /*1.一共展示10个页码，达到这个前5后4的效果
+                    * 2.如果前面不够5个，后边补齐10个
+                    * 3.如果后面不够4个，前边补齐10个*/
+                    var begin;
+                    var end;
+                    //总页码不够10页
+                    if(pb.totalPage<10){
+                        begin=1;
+                        end=pb.totalPage;
+                    }else{
+                        //总页码超过10页
+                        begin=pb.currentPage-5;
+                        end=pb.currentPage+4;
+                        //如果前面不够5个，后边补齐10个
+                        if(begin<1){
+                            begin=1;
+                            end=begin+9;
+                        }
+                        //如果说后面不足4个，前面补齐10个
+                        if(end>pb.totalPage){
+                            begin=pb.totalPage-9;
+                            end=pb.totalPage;
+                        }
+                    }
+
+
+                    //循环遍历取出分页页码
+                    for(var i=begin;i<=end;i++){
+                        //alert(i);
+                        var li;
+                        //这里我们做一个页面的判断我们如果点击的页码就是当前页码我们给其加上一个颜色
+                        if(i==pb.currentPage){
+                            //创建页码的li
+                            li='<li onclick="javascript:load('+cid+','+i+')" class="curPage"><a href="javascript:void(0)">'+i+'</a></li>';
+                        }else {
+
+                            li='<li onclick="javascript:load('+cid+','+i+')" ><a href="javascript:void(0)">'+i+'</a></li>';
+                        }
+                        //拼接字符串
+                        lis +=li;
+                    }
+                    //拼接下一页和末页
+                    var nextnumber=pb.currentPage+1;
+                    //如果说我们的下一页的值小于我们的总页数我们就进行下一页的跳转，否则我们就还是显示最后一页就可以
+                    //这里的总页数我们就是我们服务器端返回的pb对象的totalPage的属性值
+                    if(nextnumber<=pb.totalPage){
+                        var nextPage= '<li class="threeword" onclick="javascript:load('+cid+','+nextnumber+')"><a href="javascript:void(0)">下一页</a></li>';
+                    }else {
+                        //如果说我们的下一页的值小于我们的总页数我们就进行下一页的跳转，否则我们就还是显示最后一页就可以
+                        var nextPage= '<li class="threeword" onclick="javascript:load('+cid+','+pb.totalPage+')"><a href="javascript:void(0)">下一页</a></li>';
+                    }
+
+                    var lastPage='<li class="threeword" onclick="javascript:load('+cid+','+pb.totalPage+')"><a href="javascript:void(0)">末页</a></li>';
+                    lis +=nextPage;
+                    lis +=lastPage;
+                    //将lis内容设置到 ul中，所以这里我们首先要获取到我们的ul标签，利用.html方法
+                    $("#pageNum").html(lis);
+
+                    var lit="";
+                    //遍历数组，将数组中的所有数据进行填充到这个页面的主体部分。
+                    for (var i = 0; i < pb.list.length; i++) {
+                        //获取数组中的每一个list集合中的对象。
+                        /*    {
+                                 "rid": 320,
+                                 "rname": "【3月西藏桃花：西宁+拉萨+林芝+羊卓雍措 三飞一卧8天】布达拉宫 林芝 藏东南桃花沟 鲁朗林海 圣湖巴松措【观青藏铁路景观带】",
+                                 "price": 5699,
+                                 "routeIntroduce": "乘坐青藏铁路精华段“西宁—拉萨”，阶梯式逐渐适应高原环境；走进雅鲁藏布江流域雪山下桃花盛开的【桃花沟】，拍摄醉美雪域桃花；加游西藏三大圣湖之一，西藏最秀美妖艳的湖泊【羊卓雍措】！",
+                                 "rflag": "1",
+                                 "rdate": "2018-02-09 01:13:54",
+                                 "isThemeTour": "0",
+                                 "count": 0,
+                                 "cid": 5,
+                                 "rimage": "img/product/small/m3d4e24bd288c8b9ecbd81d20dbf9fe5bc.jpg",
+                                 "sid": 1,
+                                 "sourceId": "21859",
+                                 "category": null,
+                                 "seller": null,
+                                 "routeImgList": null
+                                 }*/
+                        var route= pb.list[i];
+                        var lits='<li>\n' +
+                            '                            <div class="img"><img src="'+route.rimage+'" style="width: 299px"></div>\n' +
+                            '                            <div class="text1">\n' +
+                            '                                <p>'+route.rname+'</p>\n' +
+                            '                                <br/>\n' +
+                            '                                <p>'+route.routeIntroduce+'</p>\n' +
+                            '                            </div>\n' +
+                            '                            <div class="price">\n' +
+                            '                                <p class="price_num">\n' +
+                            '                                    <span>&yen;</span>\n' +
+                            '                                    <span>'+route.price+'</span>\n' +
+                            '                                    <span>起</span>\n' +
+                            '                                </p>\n' +
+                            '                                <p><a href="route_detail.html?rid='+route.rid+'&cid='+cid+'">查看详情</a></p>\n' +
+                            '                            </div>\n' +
+                            '                        </li>';
+                        lit+=lits;
+
+                    }
+                    $("#route_list").html(lit);
+
+                    //定位到页面顶部
+                    window.scrollTo(0,0);
+                });
+
+            }
+        }
+
+    </script>
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+    <div class="page_one">
+        <div class="contant">
+            <div class="crumbs">
+                <img src="images/search.png" alt="">
+                <p>黑马旅行><span>搜索结果</span></p>
+            </div>
+            <div class="xinxi clearfix">
+                <div class="left">
+                    <div class="header">
+                        <span>商品信息</span>
+                        <span class="jg">价格</span>
+                    </div>
+                    <ul id="route_list">
+                       <!-- <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>299</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>-->
+                        <!--<li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>浪花朵朵旅行普吉岛丛林飞跃空中飞人探险游中文服务泰国旅游</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>899</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>黑妞皇家旅行普吉岛攀牙湾大船星光之旅皮划艇日落休闲特色体验</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>999</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>浪花朵朵旅行普吉岛皇帝岛珊瑚岛香蕉船拖拽伞水上项目</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>99</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>环游记 泰国清迈Lila massage女子监狱spa 丽菈泰式按摩马杀鸡</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>199</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>899</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>【减100元 含除夕/春节出发】广州增城三英温泉度假酒店/自由行套票</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>1199</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img"><img src="images/04-search_03.jpg" alt=""></div>
+                            <div class="text1">
+                                <p>泰国芭提雅三合一日游芭提雅蒂芬妮人妖秀成人门票bigeye含接送</p>
+                                <br/>
+                                <p>1-2月出发，网付立享￥1099/2人起！爆款位置有限，抢完即止！</p>
+                            </div>
+                            <div class="price">
+                                <p class="price_num">
+                                    <span>&yen;</span>
+                                    <span>1589</span>
+                                    <span>起</span>
+                                </p>
+                                <p><a href="route_detail.html">查看详情</a></p>
+                            </div>
+                        </li>-->
+                    </ul>
+                    <div class="page_num_inf">
+                        <i></i> 共
+                        <span id="totalpage"></span>页<span id="totalcount"></span>条
+                    </div>
+                    <div class="pageNum">
+                        <ul id="pageNum">
+                           <!-- <li><a href="">首页</a></li>
+                            <li class="threeword"><a href="#">上一页</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">6</a></li>
+                            <li><a href="#">7</a></li>
+                            <li><a href="#">8</a></li>
+                            <li><a href="#">9</a></li>
+                            <li><a href="#">10</a></li>
+                            <li class="threeword"><a href="javascript:;">下一页</a></li>
+                            <li class="threeword"><a href="javascript:;">末页</a></li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="top">
+                        <div class="hot">HOT</div>
+                        <span>热门推荐</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                            <div class="right">
+                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
+                                <p>网付价<span>&yen;<span>899</span>起</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                            <div class="right">
+                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
+                                <p>网付价<span>&yen;<span>899</span>起</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                            <div class="right">
+                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
+                                <p>网付价<span>&yen;<span>899</span>起</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                            <div class="right">
+                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
+                                <p>网付价<span>&yen;<span>899</span>起</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                            <div class="right">
+                                <p>清远新银盏温泉度假村酒店/自由行套...</p>
+                                <p>网付价<span>&yen;<span>899</span>起</span>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--引入头部-->
+    <div id="footer"></div>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+</body>
+
+</html>

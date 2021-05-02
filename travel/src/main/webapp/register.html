@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>注册</title>
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="stylesheet" href="css/register.css">
+		<!--导入jquery-->
+		<script src="js/jquery-3.3.1.js"></script>
+        <!--这里我们表单校验，因为我们当前这个表单里面有很多表单项，我们首先要分析清除需要对那些进行校验
+        这里主要就是1：用户名：单词字符，8到20位
+                  2：密码：单词字符，8到20位
+                  3：email：使用正则表达式来校验邮箱格式
+                  4：姓名: 非空
+                  5：手机号：使用正则表达式来校验正则格式
+                  6：出生日期：非空
+                  7：验证码：非空-->
+		<script>
+			//校验用户名
+			function checkUsername() {
+			    //1.首先获取到用户输入的username文本框中的值,$("#username")获取到用户名的框框，
+				//框框获取到之后我们直接.val()方法也就是获取到这个框框中用户名的值。
+                var username = $("#username").val();
+                //var id = document.getElementById(username);
+                //2.定义正则
+				var reg_username=/^\w{8,20}$/;
+
+				//3.将用户输入的用户名的值username和正则表达式相比较，这里test方法会返回一个Boolean值。
+				var flag = reg_username.test(username);
+				if(flag){//用户名合法
+                    $("#username").css("border","");
+				}else{//用户名非法
+				    $("#username").css("border","1px solid red");
+				}
+				return flag;
+            }
+
+            //校验密码
+            function checkPassword() {
+                //1.首先获取到用户输入的Password文本框中的值
+                var password = $("#password").val();
+                //2.定义正则
+                var reg_password=/^\w{8,20}$/;
+                //3.将用户输入的密码的值username和正则表达式相比较
+                var flag=reg_password.test(password);
+                if(flag){
+                    $("#password").css("border","");
+                }else{
+                    $("#password").css("border","1px solid red");
+                }
+                return flag;
+            }
+            //校验邮箱
+			function checkEmail(){
+			    //1首先得到这个邮箱文本框中的值
+				var emial = $("#email").val();
+				//2.定义一个正则表达式
+				var reg_email=/^\w+@\w+\.\w+$/;
+				var flag = reg_email.test(emial);
+                if(flag){
+                    $("#email").css("border","");
+				}else {
+                    $("#email").css("border","1px solid red");
+				}
+                return flag;
+			}
+            //校验手机号
+            function checkTelePhone(){
+                //1首先得到这个邮箱文本框中的值
+                var telephone = $("#telephone").val();
+                //2.定义一个正则表达式,手机号必须为11位而且要以13,15,17,18,19开头，后面九位
+                var reg_telephone=/^[1][3,4,5,7,8][0-9]{9}$/;
+                var flag = reg_telephone.test(telephone);
+                if(flag){
+                    $("#telephone").css("border","");
+                }else {
+                    $("#telephone").css("border","1px solid red");
+					//alert("请重新输入手机号，手机号必须为11位而且要以13,15,17,18,19开头。谢谢配合");
+                }
+                return flag;
+            }
+            /*校验姓名*/
+            function checkname(){
+              /*  var name = $("#name").val();*/
+                var name = document.getElementById("name").value;
+				if(name==""||name==null){
+				    //alert("用户名不能为空,请重新输入");
+                    $("#name").css("border","1px solid red");
+                    return false;
+
+				}
+				else{
+                    //alert("用户名可用");
+                    $("#name").css("border","");
+                    return true;
+				}
+			}
+
+            /*校验验证码*/
+            function checkCode(){
+                var check = $("#check").val();
+                if(check==""||check==null){
+                    $("#check").css("border","1px solid red");
+                    return false;
+
+                }
+                else{
+                    $("#check").css("border","");
+                    return true;
+                }
+            }
+
+            /*其实表单提交无外乎就是做两件事第一件就是发送数据到服务器，第二件就是跳转页面我们这里发送数据我们使用异步方式
+            * ，我们是否向服务器端发送数据就是取决于前端js表单的校验结果，如果校验通过我们就是向服务器端发送表单的数据*/
+
+            /*我们这里什么时候进行这个前端js表单的校验我们有两个第一个就是用户点击这个表单的提交按钮的时候，
+            * 另外一个就是当我们某一个文本框失去焦点的时候触发校验对某一个文本框进行校验*/
+            $(function () {
+                /*当点击这个表单的提交按钮时，进行这个表单的校验调用所有的校验方法*/
+                //如果这个方法没有返回值，或者返回为true，则表单提交，如果返回为false，则表单不提交
+				//serialize()方法序列化表单数据为字符串。
+                $("#registerForm").submit(function(){
+                     if(checkUsername()&&checkPassword()&&checkEmail()&&checkTelePhone()&&checkname()&&checkCode()){
+                         $.post("user/regist",$("#registerForm").serialize(),function(data){
+                             //处理服务器返回的数据，代码也就是data。{"flag":true,"data":null,"errorMsg":null}
+							 //这一段数据都是json格式的字符串，这个数据传递到后台就变成了一个js对象，所以我们直接这个
+							 //alert(data)结果为[object,object]
+                             if(data.flag){
+                                 //debugger;
+                                 alert(data);//[object,object]
+                                 alert(data.flag);//true
+								 console.log(data);//{flag:true,data:null,errorMsg:null}
+                                 alert(typeof data); //[object]
+                                 alert(JSON.stringify(data));//{"flag":true,"data":null,"errorMsg":null}
+                                 var b=JSON.stringify(data);
+                                 alert(typeof b); //string
+								 alert(data.flag); //true
+                                 //注册成功，跳转到成功页面
+                                 location.href="register_ok.html";
+							 }
+							 else{
+                                 //注册失败，给这个errorMsg提示信息
+								 $("#errorMsg").html(data.errorMsg);
+							 }
+						 });
+					 }
+                 return false;
+				});
+                /*当点击某一个表单中的框框失去焦点时，进行这个表单的校验*/
+                $("#username").blur(checkUsername);
+                $("#password").blur(checkPassword);
+				$("#email").blur(checkEmail);
+				$("#telephone").blur(checkTelePhone);
+				$("#name").blur(checkname);
+				$("#check").blur(checkCode);
+
+            });
+			/*第一步首先写一个$(shift+4)，之后后面跟上一对小括号，2：我们在小括号内写上一个function();
+			* 第三步我们在function后面跟上的小括号再写上一对大括号，第四步我们在最外边的小括号后面加上一个分号；
+			* 第五步我们在大括号内部进行jquery代码的编写，只不过这里我们的入口函数中的代码还是一个jquery函数，
+			* 我们首先写一个$,并且在$后面更上我们的小括号(),之后我们进入到小括号内部获取到某一个文本框,之后
+			* 写上一个.后面跟上我们的也就是我们点击的时候触发函数submit，当提交表单时，会发生 submit事件。我们
+			* 首先写上一个.submit(),之后进入到下括号内部我们写上一个function()，之后再function后面的小括号写
+			* 上一个大括号，到外边的小括号后面写上一个分号；之后进入到大括号内部进行jquery代码的编写*/
+
+
+		</script>
+
+    </head>
+	<body>
+	<!--引入头部-->
+	<div id="header"></div>
+        <!-- 头部 end -->
+    	<div class="rg_layout">
+    		<div class="rg_form clearfix">
+    			<div class="rg_form_left">
+    				<p>新用户注册</p>
+    				<p>USER REGISTER</p>
+    			</div>
+    			<div class="rg_form_center">
+				<!--这个页面就是一个普通的表单，这个表单中包含一些普通的文本框以及表单输入项在页面的底部有一个注册按钮
+				点击这个注册按钮我们需要完成一个表单的校验功能，校验通过我们才可以进行提交这里是异步提交。我们这里为了
+				可以看到这个表单提交的效果我们就是首先给这个表单添加一个action选项。这里将来就是往这里的路径里面提交数据-->
+					<div id="errorMsg" style="color: red; text-align: center">
+					</div>
+					<!--注册表单-->
+    				<form id="registerForm" action="/user">
+						<!--提交处理请求的标识符-->
+						<input type="hidden" name="action" value="register">
+    					<table style="margin-top: 25px;">
+    						<tr>
+    							<td class="td_left">
+    								<label for="username">用户名</label>
+    							</td>
+    							<td class="td_right">
+    								<input type="text" id="username" name="username" placeholder="请输入账号">
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="password">密码</label>
+    							</td>
+    							<td class="td_right">
+    								<input type="text" id="password" name="password" placeholder="请输入密码">
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="email">Email</label>
+    							</td>
+    							<td class="td_right">
+    								<input type="text" id="email" name="email" placeholder="请输入Email">
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="name">姓名</label>
+    							</td>
+    							<td class="td_right">
+    								<input type="text" id="name" name="name" placeholder="请输入真实姓名">
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="telephone">手机号</label>
+    							</td>
+    							<td class="td_right">
+    								<input type="text" id="telephone" name="telephone" placeholder="请输入您的手机号">
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="sex">性别</label>
+    							</td>
+    							<td class="td_right gender">
+    								<input type="radio" id="sex" name="sex" value="男" checked> 男
+    								<input type="radio" name="sex" value="女"> 女
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="birthday">出生日期</label>
+    							</td>
+    							<td class="td_right">
+    								<input type="date" id="birthday" name="birthday" placeholder="年/月/日">
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left">
+    								<label for="check">验证码</label>
+    							</td>
+    							<td class="td_right check">
+    								<input type="text" id="check" name="check" class="check">
+    								<img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">
+									<script type="text/javascript">
+										//图片点击事件
+										function changeCheckCode(img) {
+											img.src="checkCode?"+new Date().getTime();
+                                        }
+									</script>
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="td_left"> 
+    							</td>
+    							<td class="td_right check"> 
+    								<input type="submit" class="submit" value="注册">
+									<span id="msg" style="color: red;"></span>
+    							</td>
+    						</tr>
+    					</table>
+    				</form>
+    			</div>
+    			<div class="rg_form_right">
+    				<p>
+    					已有账号？
+    					<a href="#">立即登录</a>
+    				</p>
+    			</div>
+    		</div>
+    	</div>
+        <!--引入尾部-->
+    	<div id="footer"></div>
+		<!--导入布局js，共享header和footer-->
+		<script type="text/javascript" src="js/include.js"></script>
+    	
+    </body>
+</html>
