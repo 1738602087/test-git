@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.judicial.mapper.EstateMapper">
+
+	<select id="getEstateUserByEstateId" resultMap="cn.repeatlink.common.mapper.EstateUserMapper.BaseResultMap">
+		select * from estate_user where estate_id=#{estateId} and status = 1
+	</select>
+	
+	<select id="getEstateByInfo" resultMap="cn.repeatlink.common.mapper.EstateInfoMapper.BaseResultMap">
+		select * from estate_info where addr=#{addr}
+		<if test="addr2 != null and addr2 != ''">
+			and addr2 = #{addr2}
+		</if>
+		 and `status` = #{status} and type=#{type} and house_id=#{houseId}
+	</select>
+
+	<select id="findEstateListByUserId" resultMap="cn.repeatlink.module.judicial.mapper.BaseMapper.EstateUserInfo">
+		select
+			estate_id,
+			addr,
+			addr_code,
+			addr2,
+			house_id
+		from
+			estate_info
+		where
+			estate_id IN (select estate_id from estate_user where user_general_id=#{userId,jdbcType=VARCHAR} and `status`=1)
+			and `status`=1
+	</select>
+	
+	<select id="findEstateUserListByEstateId" resultMap="cn.repeatlink.module.judicial.mapper.BaseMapper.SaleUserInfo">
+		SELECT
+			user_id,
+			fullname,
+			fullname_kana,
+			gender,
+			0 AS verify,
+			CONCAT( IFNULL(addr1,''), IFNULL(addr2,''), IFNULL(addr3,'') ) AS addr 
+		FROM
+			user_general 
+		WHERE
+			user_id IN ( SELECT user_general_id FROM estate_user WHERE estate_id = #{estateId,jdbcType=VARCHAR} )
+	</select>
+	
+	<select id="findEstateList" resultMap="cn.repeatlink.module.judicial.mapper.BaseMapper.EstateUserInfo">
+		SELECT
+			ei.estate_id,
+			ei.house_id,
+			ei.addr,
+			ei.addr_code,
+			ei.addr2,
+			ei.type,
+			ei.create_time
+		FROM
+			estate_info ei
+			
+		WHERE
+			ei.`status` = 1 
+			<if test="type != null and type != ''">
+				AND ei.type = #{type}
+			</if>
+			<if test="addr != null and addr != ''">
+				AND LOWER(ei.addr) LIKE LOWER(concat('%', #{addr}, '%')) 
+			</if>
+			<if test="addr2 != null and addr2 != ''">
+				AND LOWER(ei.addr2) LIKE LOWER(concat('%', #{addr2}, '%')) 
+			</if>
+			<if test="house_id != null and house_id != ''">
+				AND LOWER(ei.house_id) LIKE LOWER(concat('%', #{house_id}, '%')) 
+			</if>
+		LIMIT 50
+	</select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxy.dao.BaseDictMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lxy.model.BaseDict">
+        <id column="dict_id" property="dictId" />
+        <result column="dict_type_code" property="dictTypeCode" />
+        <result column="dict_type_name" property="dictTypeName" />
+        <result column="dict_item_name" property="dictItemName" />
+        <result column="dict_item_code" property="dictItemCode" />
+        <result column="dict_sort" property="dictSort" />
+        <result column="dict_enable" property="dictEnable" />
+        <result column="dict_memo" property="dictMemo" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        dict_id, dict_type_code, dict_type_name, dict_item_name, dict_item_code, dict_sort, dict_enable, dict_memo
+    </sql>
+
+</mapper>

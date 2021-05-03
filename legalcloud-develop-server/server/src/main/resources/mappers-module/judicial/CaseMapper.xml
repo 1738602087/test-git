@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.judicial.mapper.CaseMapper">
+  
+  <select id="test" resultType="java.lang.Long">
+    select count(case_id) from case_estate
+  </select>
+  
+  <select id="search" resultMap="cn.repeatlink.module.judicial.mapper.BaseMapper.EstatecaseBaseVo">
+    SELECT
+		c.case_id, c.case_name, c.start_date, c.`status`, u.fullname as assigned_to, c.create_time, c.complete_time
+		, c.fetch_api, c.step_seller_verify, c.step_buyer_input, c.step_reg_finish, c.step_deal_finish
+		, c.user_judicial_id
+		<choose>
+			<when test="pageVo != null and pageVo.search_vo != null and pageVo.search_vo.order_field == 'complete_time'">
+			, DATE_FORMAT(c.complete_time, '%Y-%m-%d %H:%i:%s')
+			</when>
+			<when test="pageVo != null and pageVo.search_vo != null and pageVo.search_vo.order_field == 'case_name'">
+			, c.case_name
+			</when>
+			<otherwise>
+			, DATE_FORMAT(c.create_time, '%Y-%m-%d %H:%i:%s')
+			</otherwise>
+		</choose> as `_orderStr`
+	FROM
+		(select ce.* from case_estate ce LEFT JOIN user_judicial u ON u.user_id = ce.user_judicial_id where u.group_id = #{groupId}) c
+		LEFT JOIN user_judicial u ON u.user_id = c.user_judicial_id 
+		<if test="pageVo.search_vo.seller_name != null and pageVo.search_vo.seller_name != ''">
+		LEFT JOIN case_seller cs ON cs.case_id = c.case_id AND cs.`status` = 1
+		LEFT JOIN user_general seller ON seller.user_id = cs.user_general_id
+		</if>
+		<if test="pageVo.search_vo.buyer_name != null and pageVo.search_vo.buyer_name != ''">
+		LEFT JOIN case_buyer cb ON cb.case_id = c.case_id AND cb.`status` = 1
+		LEFT JOIN user_general buyer ON buyer.user_id = cb.user_general_id
+		</if>
+	WHERE
+		1 = 1 AND u.group_id = #{groupId}
+		AND c.`status` = ${@cn.repeatlink.module.judicial.common.Constant$CaseStatus@VALID}
+		<if test="pageVo.time != null and pageVo.time != '' and pageVo.id != null and pageVo.id != ''">
+		AND	<choose>
+				<when test="pageVo != null and pageVo.search_vo != null and pageVo.search_vo.order_field == 'complete_time'">
+				c.complete_time
+				</when>
+				<when test="pageVo != null and pageVo.search_vo != null and pageVo.search_vo.order_field == 'case_name'">
+				c.case_name
+				</when>
+				<otherwise>
+				c.create_time
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="pageVo != null and pageVo.search_vo != null and pageVo.search_vo.order_dir == 'asc'">
+				<![CDATA[ > ]]>
+				</when>
+				<otherwise>
+				<![CDATA[ < ]]>
+				</otherwise>
+			</choose> #{pageVo.time,jdbcType=VARCHAR}
+		<![CDATA[ AND c.case_id < #{pageVo.id,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="pageVo.search_vo != null">
+			<if test="pageVo.search_vo.case_name != null and pageVo.search_vo.case_name != ''">
+			AND c.case_name like concat('%', #{pageVo.search_vo.case_name}, '%')
+			</if>
+			<if test="pageVo.search_vo.staff_name != null and pageVo.search_vo.staff_name != ''">
+			AND ((u.fullname like concat('%', #{pageVo.search_vo.staff_name}, '%')) OR (u.fullname_kana like concat('%', #{pageVo.search_vo.staff_name}, '%')))
+			</if>
+			<if test="pageVo.search_vo.create_time != null and pageVo.search_vo.create_time != ''">
+			AND DATE_FORMAT(c.create_time, '%Y-%m') = #{pageVo.search_vo.create_time}
+			</if>
+			<if test="pageVo.search_vo.complete_time != null and pageVo.search_vo.complete_time != ''">
+			AND DATE_FORMAT(c.complete_time, '%Y-%m') = #{pageVo.search_vo.complete_time}
+			</if>
+			<if test="pageVo.search_vo.seller_name != null and pageVo.search_vo.seller_name != ''">
+			AND seller.fullname LIKE CONCAT('%', #{pageVo.search_vo.seller_name}, '%')
+			</if>
+			<if test="pageVo.search_vo.buyer_name != null and pageVo.search_vo.buyer_name != ''">
+			AND buyer.fullname LIKE CONCAT('%', #{pageVo.search_vo.buyer_name}, '%')
+			</if>
+			<if test="pageVo.search_vo.type == 1">
+			AND c.user_judicial_id = #{userId}
+			</if>
+			<if test="pageVo.search_vo.state == 1">
+			AND c.step_reg_finish = 0
+			</if>
+			<if test="pageVo.search_vo.state == 2">
+			AND c.step_reg_finish = 1
+			</if>
+			<!-- 兼容旧版本 -->
+			<if test="pageVo.search_vo.operate_auth != null and pageVo.search_vo.operate_auth == @cn.repeatlink.module.judicial.common.Constant$CaseOperaAuth@UPDATEABLE">
+			AND c.user_judicial_id = #{userId}
+			</if>
+			<if test="pageVo.search_vo.step_reg_finish != null">
+			AND c.step_reg_finish = #{pageVo.search_vo.step_reg_finish}
+			</if>
+			<if test="pageVo.search_vo.status != null and pageVo.search_vo.status != ''">
+			AND c.status = #{pageVo.search_vo.status}
+			</if>
+			<!-- over -->
+		</if>
+	ORDER BY
+		_orderStr <choose>
+					<when test="pageVo != null and pageVo.search_vo != null and pageVo.search_vo.order_dir == 'asc'">
+					ASC
+					</when>
+					<otherwise>
+					DESC
+					</otherwise>
+				</choose>,
+		c.case_id DESC 
+		LIMIT ${pageVo.size}
+  </select>
+  
+  <select id="selectCaseEstateForUpdate" resultMap="cn.repeatlink.common.mapper.CaseEstateMapper.BaseResultMap">
+  	select * from case_estate where case_id = #{caseId,jdbcType=VARCHAR} for update
+  </select>
+  
+  <select id="getBuyers" resultMap="cn.repeatlink.common.mapper.CaseBuyerMapper.BaseResultMap">
+  	select * from case_buyer where case_id = #{caseId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectEstateForUpdate" resultMap="cn.repeatlink.common.mapper.EstateInfoMapper.BaseResultMap">
+  	select * from estate_info where estate_id = #{estateId,jdbcType=VARCHAR} for update
+  </select>
+  
+  <select id="selectEstateUserList" resultMap="cn.repeatlink.common.mapper.EstateUserMapper.BaseResultMap">
+  	select * from estate_user where estate_id = #{estateId,jdbcType=VARCHAR} and `status` = 1
+  </select>
+  
+  <select id="getSellers" resultMap="cn.repeatlink.common.mapper.CaseSellerMapper.BaseResultMap">
+  	select * from case_seller where case_id = #{caseId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getCaseEstateRecordList" resultMap="cn.repeatlink.common.mapper.CaseEstateRecordMapper.BaseResultMap">
+  	select * from case_estate_record where case_id = #{caseId,jdbcType=VARCHAR} and record_type = #{type,jdbcType=SMALLINT}
+  	<if test="status != null">
+  		and `status` = #{status}
+  	</if>
+  </select>
+  
+  <update id="deleteCaseEstateRecordByCaseId">
+  	delete from case_estate_record where case_id = #{caseId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="deleteCaseEstateRecordUserByCaseId">
+  	delete from case_estate_record_user where estate_record_id in (select record_id from case_estate_record where case_id = #{caseId,jdbcType=VARCHAR})
+  </update>
+  
+  <update id="deleteCaseSellerByCaseId">
+  	delete from case_seller where case_id = #{caseId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getCaseEstateRecordByInfo" resultMap="cn.repeatlink.common.mapper.CaseEstateRecordMapper.BaseResultMap">
+  	select * from case_estate_record where addr = #{addr,jdbcType=VARCHAR}
+  	<if test="addr2 != null and addr2 != ''">
+			and addr2 = #{addr2}
+		</if>
+  	 and type = #{type}
+  	and house_id = #{houseId} and `status` = #{status}
+  </select>
+  
+</mapper>

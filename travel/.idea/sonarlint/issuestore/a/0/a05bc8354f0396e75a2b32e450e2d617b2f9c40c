@@ -1,0 +1,22 @@
+
+f	java:S117'"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³–Ú¯
+k	java:S117Q"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ‚ô°ÿÿÿÿÿ
+V
+java:S1128";Remove this unused import 'javax.servlet.http.HttpServlet'.(û÷Å›ÿÿÿÿÿ
+’
+java:S1130!"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(Õ³è‹þÿÿÿÿ
+Z
+java:S2147K"DCombine this catch with the one at line 73, which has the same body.(åþáÿ
+Q	java:S125O"<This block of commented-out lines of code should be removed.(§¦ÕÉ
+’
+java:S1130o"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(é±áøÿÿÿÿ
+“
+java:S1130€"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(¾î‚øÿÿÿÿ
+\
+java:S2147Ž"ECombine this catch with the one at line 140, which has the same body.(åþáÿ
+R	java:S125’"<This block of commented-out lines of code should be removed.(§¦ÕÉ
+Ž
+java:S1130·"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(‡ŒÇî
+“
+java:S1130Æ"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(ë£ÿùÿÿÿÿ
+R	java:S125Í"<This block of commented-out lines of code should be removed.(§¦ÕÉ

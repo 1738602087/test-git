@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js和json字符串的转换</title>
+</head>
+<script type="text/javascript">
+    /*编写一个js对象*/
+    var user={
+        name:"lxy",
+        age:23,
+        sex:"男"
+    };
+    /*输出一下这个对象*/
+    console.log(user); /*{name: "lxy", age: 23, sex: "男"}*/
+
+    //将js对象转换为json字符串
+    var usr = JSON.stringify(user);
+    console.log(usr);/*{"name":"lxy","age":23,"sex":"男"}*/
+    /*不过我们经常在浏览器的控制台中所看到的通常都是下面的 这种形式
+    *{
+    * "name":"lxy",
+    * "age":23,
+    * "sex":"男"
+    * } */
+
+    /*将json字符串转换为js对象*/
+    var obj = JSON.parse(usr);
+    console.log(obj);/*{name: "lxy", age: 23, sex: "男"}*/
+
+    var studnet={
+        name:"lxy",
+        age:23,
+        sex:"男"
+    };
+    console.log(studnet.name);//lxy
+    /*定义一个json的嵌套对象，也就是定义一个json对象，json对象中的每一个属性又是一个对象
+    * 这里我们在内层中定义了2个json对象，这里我们在访问的时候我们需要通过这个*/
+    var person={
+                1:
+                  {
+                    name:"lxy",
+                    age:23,
+                    sex:"男"
+                  },
+               2:
+                 {
+                  name:"zs",
+                  age:23,
+                  sex:"男"
+                 }
+
+    };
+    console.log(person[2]); //{name: "zs", age: 23, sex: "男"}
+    alert(person[2]); //[object Object]
+    alert(JSON.stringify(person[2])); //{"name":"zs","age":23,"sex":"男"}
+    console.log(person[2].age); //23
+
+    /*	JSON通过6种数据类型来表示：
+       	1：单个数据，有number，String，boolean和null四种类型数据。
+            	字符串
+              	例子：”字符串”
+              	注意：不能使用单引号
+          	数字：
+            	例子：123.4
+         	布尔值：
+          	例子：true、false
+        	null值:
+         	例子：null
+      	2：多个有序的数据：数组
+      	   用[]包含起来，其元素可以是任意三类数据中的任意一种，元素之间使用，号隔开；
+      	   通过object[index]的形式访问数据，索引从0开始。
+        	数组
+        	例子：[1,”str”,true]
+      	3：多个无序的数据：对象
+      	   用{}包含起来，其元素必须由key-value组成，key是一个字符串，value是任意类型数据，
+      	   Key与value之间用:号隔开，两个key-value之间使用，号隔开，通过object.key的形式访问数据。
+          (对象表示为键值对，数据由逗号分隔，花括号保存对象，方括号保存数组)
+       	对象
+       	例子：{“name”:”sunwukong”, ”age”:18}
+*/
+
+
+
+
+</script>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.general.mapper.GeneralOmMapper">
+  
+  <select id="getAllCreditCardListByUserIdForUpdate" resultMap="cn.repeatlink.common.mapper.OmCustomerCreditMapper.BaseResultMap">
+  	select * from om_customer_credit where customer_id = #{userId} for update
+  </select>
+  
+  <select id="findFeeHistoryPageList" resultMap="cn.repeatlink.module.general.mapper.BaseMapper.FeeDetailVo">
+  	SELECT
+		id,
+		amount,
+		deduction_time,
+		card_no,
+		credit_company_name,
+		`desc` AS `title` 
+	FROM
+		om_deduction_record 
+	<where>
+		and customer_id = #{userId}
+		<if test="vo.id != null and vo.id != ''">
+			AND deduction_time >= #{vo.time}
+			AND id > #{vo.id}
+		</if>
+	</where>
+	ORDER BY deduction_time DESC, id DESC
+	LIMIT ${vo.size}
+  </select>
+  <select id="getOmRecordByIdForUpdate" resultMap="cn.repeatlink.common.mapper.OmDeductionRecordMapper.BaseResultMap">
+  	select * from om_deduction_record where id = #{recordId} for update
+  </select>
+  
+</mapper>

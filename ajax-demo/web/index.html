@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var stu = {
+			"lastName" : "张三",
+			"age" : 18
+		};
+		
+		
+		//假设服务器给我们给了这么一个字符串；
+		var jsonStr = JSON.stringify(stu);
+		//想使用这个字符串，并获取到它原来代表的js对象里面的属性值。。。
+		//需要把字符串（满足js对象表示法（json）格式）转为js对象；
+	//	alert(jsonStr.lastName)
+		var stu02 = JSON.parse(jsonStr);
+	//	alert(stu02.lastName);
+		
+		
+	</script>
+	<a href="hello">给我一些信息...</a>
+</body>
+</html>

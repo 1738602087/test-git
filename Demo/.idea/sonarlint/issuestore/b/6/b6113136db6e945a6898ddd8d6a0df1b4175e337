@@ -1,0 +1,10 @@
+
+j
+java:S11925"ODefine a constant instead of duplicating this literal "<li><a href=\"" 3 times.(µö»×ÿÿÿÿÿ
+o	java:S135‡"YReduce the total number of break and continue statements in this loop to use at most one.(»­Ì¥
+O
+java:S4719f"9Replace charset name argument with StandardCharsets.UTF_8(ÔÉÇ¸
+T
+java:S4719f">Replace charset name argument with StandardCharsets.ISO_8859_1(ÔÉÇ¸
+K
+java:S2864‡"4Iterate over the "entrySet" instead of the "keySet".(»­Ì¥

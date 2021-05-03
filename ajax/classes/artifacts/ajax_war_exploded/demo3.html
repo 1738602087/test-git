@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/ajax/js/my.js"></script>
+
+<script type="text/javascript">
+	//获取省份信息
+	function getProvince() {
+		//向服务器发送请求获取省份信息
+		//1.获取xmlhttprequest对象
+		var xmlHttp = getXmlHttpRequest();
+		//2.设置回调函数
+		xmlHttp.onreadystatechange = function() {
+
+			if (xmlHttp.readyState == 4) {
+				if (xmlHttp.status == 200) {
+					//将服务器得到的信息处理填充到省份下拉框
+					var provinces = xmlHttp.responseText; //辽宁,黑龙江,吉林
+					alert(provinces);//弹窗查看数据是否正确显示
+					/*这里因为我们得到的数据是一个String类型的字符串，中间使用了逗号进行分割
+					* 所以我们要将这个字符串中的逗号去掉，之后得到每一个省份信息填充到我们的这个
+					* select标签中就可以了。
+					* split() 方法用于把一个字符串分割成字符串数组。
+					* 语法
+                        stringObject.split(separator,howmany)参数 描述
+                        separator 必需。字符串或正则表达式，从该参数指定的地方分割 stringObject。
+                        howmany 可选。该参数可指定返回的数组的最大长度。如果设置了该参数，返回的子串不会多于这个参数指定的数组。如果没有设置该参数，整个字符串都会被分割，不考虑它的长度。
+
+                      返回值
+                         一个字符串数组。该数组是通过在 separator 指定的边界处将字符串 stringObject 分割成子串创建的。
+                         返回的数组中的字串不包括 separator 自身。
+                      但是，如果 separator 是包含子表达式的正则表达式，那么返回的数组中包括与这些
+                      子表达式匹配的字串（但不包括与整个正则表达式匹配的文本）。
+                        */
+					var ps = provinces.split(",");
+					/*这里我们得到的其实是一个数组，我们可以将结果进行打印弹框或者在控制台上
+					* 进行输出查看我们的代码逻辑是否正确*/
+					alert(ps.length+ps[0]);
+					console.log(ps);
+
+					//使用html dom来完成将数据填充到下拉框操作
+					/*这里我们首先将这个每一个省份信息遍历出来，这里也就是我们的ps[i]变量用于存放
+					* 这个每一次遍历出来的省份信息，第一次为这个黑龙江，第二次吉林，*/
+					for (var i = 0; i < ps.length; i++) {
+					    /*这里我们创建一个option对象，这个option选项的值也就是我们每一次遍历出来的
+					    * 省份信息，*/
+						var option = document.createElement('option');
+						option.text = ps[i];
+						//将option添加到下拉框中，就是将option选项中存放的每一次遍历出的省份信息添加到我们的
+						//下拉框中，这里我们得到这个下拉框也就是这个document.getElementById("province")
+						document.getElementById("province").add(option);
+					}
+				}
+			}
+		}
+		//3.open
+		xmlHttp.open("POST", "/ajax/province");
+		//4.send
+		xmlHttp.setRequestHeader("content-type",
+				"application/x-www-form-urlencoded");
+		xmlHttp.send(null);
+	}
+
+	//获取城市信息
+	function getCity() {
+
+		//1.得到省份名称 
+		var provinceElement = document.getElementById("province"); //得到省份下拉框元素
+		var ops = provinceElement.options; //得到下拉框下所有option数组
+		var option = ops[provinceElement.selectedIndex]; //得到选中项option对象
+		var pname = option.text; //得到option文本
+		alert(pname);
+
+		//2.向服务器发送请求,这一部分代码和我们上面的获取这个省份信息的代码类似我们直接修改一下就可以，
+		//我们只需要修改一下这个我们的请求路径和这个我们的传递参数就可以了，此外我们还需要在每一次选择城市
+		//之前首先清空一下这个城市的下拉框信息，否则我们的城市信息就可能出现错误数据
+		//2.1.获取xmlhttprequest对象
+		var xmlHttp = getXmlHttpRequest();
+		//2.2.设置回调函数
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4) {
+				if (xmlHttp.status == 200) {
+					//清空城市下拉框信息
+					document.getElementById("city").innerHTML = "<option>--请选择城市--</option>";
+					var citys = xmlHttp.responseText;
+					var cs = citys.split(",");
+
+					//使用html dom来完成将数据填充到下拉框操作
+					for (var i = 0; i < cs.length; i++) {
+						var option = document.createElement('option');
+						option.text = cs[i];
+						//将option添加到下拉框中
+						document.getElementById("city").add(option);
+					}
+				}
+			}
+		}
+		//2.3.open
+		xmlHttp.open("POST", "/ajax/city");
+		//4.send
+		xmlHttp.setRequestHeader("content-type",
+				"application/x-www-form-urlencoded");
+		xmlHttp.send("pname=" + pname);
+
+	}
+</script>
+
+</head>
+<body onload="getProvince()">
+	<select id="province" onchange="getCity()">
+		<option>--请选择省份--</option>
+	</select>
+
+	<select id="city">
+		<option>--请选择城市--</option>
+	</select>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.general.mapper.GeneralCaseMapper">
+  
+  <select id="getProcessCaseList" resultMap="cn.repeatlink.module.general.mapper.BaseMapper.CaseInfo">
+	SELECT
+		c.case_id,
+		c.case_name,
+		c.start_date,
+		c.`status`,
+		u.fullname AS staff_name,
+		c.fetch_api,
+		c.step_seller_verify,
+		c.step_buyer_input,
+		c.step_reg_finish,
+		c.step_deal_finish
+	FROM
+		( SELECT * FROM case_buyer WHERE user_general_id = #{userId} AND fetch_confirm = 0 ) b
+		LEFT JOIN case_estate c ON c.case_id = b.case_id
+		LEFT JOIN ( SELECT * FROM user_general WHERE user_id = #{userId} ) u ON u.user_id = b.user_general_id 
+	WHERE
+		c.case_id IS NOT NULL 
+	GROUP BY
+		c.case_id
+	ORDER BY
+		c.create_time desc
+  </select>
+  
+</mapper>

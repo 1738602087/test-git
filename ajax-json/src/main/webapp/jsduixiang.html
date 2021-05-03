@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+			
+			/*创建一个对象,这种方式使用的不多，new运算符创建并初始化一个新对象。
+			*关键字new后跟随一个函数调用，这里的函数称做构造函数，构造函数用
+			* 以初始化一个新创建的对象.javascript语言核心中的原始类型都包含
+			* 内置构造函数(也就是说我们java中的一些对象比如这个object，Array
+			* 都是可以使用new关键字去进行使用的。也就是js的内置对象)。使用构造函数
+			* 创建对象，我们只能先创建一个对象，然后再往这个对象里面添加属性。
+			*/
+			//var obj = new Object();
+			
+			//使用对象字面量来创建一个对象
+			var obj = {};//创建一个js对象，无原生属性。
+			//console.log(obj); [object,object]
+			//console.log(typeof obj); object
+			obj.name = "孙悟空";
+			//console.log(obj.name); //孙悟空
+			/*
+			 * 使用对象字面量，可以在创建对象时，直接指定对象中的属性
+			 * 语法：{属性名:属性值,属性名:属性值....}
+			 * 	对象字面量的属性名可以加引号也可以不加，建议不加,
+			 * 	如果要使用一些特殊的名字，则必须加引号
+			 * 
+			 * 属性名和属性值是一组一组的名值对结构，
+			 * 	名和值之间使用:连接，多个名值对之间使用,隔开
+			 * 	如果一个属性之后没有其他的属性了，就不要写,
+			 */
+			//这种表示方式更加清晰
+			var obj2 = {
+				name:"猪八戒",
+				age:13,
+				gender:"男",
+				test:{name:"沙僧"}
+			};
+			console.log(obj2.test);//object{name="沙僧"}
+
+			
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

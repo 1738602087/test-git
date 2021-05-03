@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "spring.i18n.basename",
+  "type": "java.lang.String",
+  "description": "A description for 'spring.i18n'"
+}]}

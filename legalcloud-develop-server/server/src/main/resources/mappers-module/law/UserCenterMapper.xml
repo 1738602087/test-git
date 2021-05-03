@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.UserCenterMapper">
+  
+  <select id="selectGroupUserInfo" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.LawUserInfo">
+    SELECT
+		u.login_id,
+		u.fullname,
+		u.fullname_kana,
+		u.tel,
+		u.email,
+		u.gender,
+		u.sendmail_flag,
+		u.avatar,
+		u.birthday,
+		g.group_name 
+	FROM
+		( SELECT * FROM law_group_user WHERE sys_user_id = #{userId} ) u
+		LEFT JOIN law_group g ON g.group_id = u.group_id
+  </select>
+  <select id="selectJudicialUserInfo" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.LawUserInfo">
+    SELECT
+		u.login_id,
+		u.fullname,
+		u.fullname_kana,
+		u.email,
+		u.gender,
+		u.avatar,
+		u.birthday,
+		u.tel,
+		u.sendmail_flag,
+		g.group_name 
+	FROM
+		( SELECT * FROM user_judicial WHERE user_id = #{judicialId} ) u
+		LEFT JOIN law_group g ON g.group_id = u.group_id
+  </select>
+  
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.general.mapper.BaseMapper">
+  <resultMap id="CaseInfo" type="cn.repeatlink.module.general.vo.main.CaseInfo">
+    <result column="case_id" jdbcType="VARCHAR" property="case_id" />
+    <result column="case_name" jdbcType="VARCHAR" property="case_name" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staff_name" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="start_date" />
+    <result column="step_seller_verify" jdbcType="SMALLINT" property="step_seller_verify" />
+    <result column="step_buyer_input" jdbcType="SMALLINT" property="step_buyer_input" />
+    <result column="step_deal_finish" jdbcType="SMALLINT" property="step_deal_finish" />
+    <result column="step_reg_finish" jdbcType="SMALLINT" property="step_reg_finish" />
+    <result column="fetch_api" jdbcType="SMALLINT" property="fetch_api" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+  
+  <resultMap id="EstateInfo" type="cn.repeatlink.module.general.vo.main.EstateInfo">
+    <result column="estate_id" jdbcType="VARCHAR" property="estate_id" />
+    <result column="set_id" jdbcType="VARCHAR" property="_set_id" />
+    <result column="house_id" jdbcType="VARCHAR" property="house_id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="estate_no" jdbcType="VARCHAR" property="estate_no" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="struct" jdbcType="VARCHAR" property="struct" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="addr_code" jdbcType="VARCHAR" property="addr_code" />
+    <result column="addr2" jdbcType="VARCHAR" property="addr2" />
+    <result column="record" jdbcType="VARCHAR" property="record" />
+    <result column="has_pdf" jdbcType="BIT" property="has_pdf" />
+  </resultMap>
+  
+  <resultMap id="EstateUserInfo" type="cn.repeatlink.module.general.vo.main.EstateUserInfo">
+  	<result column="user_id" jdbcType="VARCHAR" property="user_id" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="fullname_kana" jdbcType="VARCHAR" property="fullname_kana" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="gender" jdbcType="SMALLINT" property="gender" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="face_flag" jdbcType="SMALLINT" property="face_flag" />
+    <result column="face_update_time" jdbcType="TIMESTAMP" property="face_update_time" />
+  </resultMap>
+  
+  <resultMap id="FeeItemVo" type="cn.repeatlink.module.general.vo.payment.FeeItemVo">
+    <result column="id" jdbcType="VARCHAR" property="fee_id" />
+    <result column="amount" jdbcType="BIGINT" property="money" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="deduction_time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  
+  <resultMap id="FeeDetailVo" type="cn.repeatlink.module.general.vo.payment.FeeDetailVo">
+    <result column="id" jdbcType="VARCHAR" property="fee_id" />
+    <result column="amount" jdbcType="BIGINT" property="money" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="deduction_time" jdbcType="TIMESTAMP" property="time" />
+    <result column="card_no" jdbcType="VARCHAR" property="card_no" />
+    <result column="credit_company_name" jdbcType="VARCHAR" property="credit_company_name" />
+  </resultMap>
+  
+  <resultMap id="GeneralOrderItemVo" type="cn.repeatlink.module.usercenter.vo.GeneralOrderItemVo">
+    <result column="user_id" jdbcType="VARCHAR" property="user_id" />
+    <result column="total_amount" jdbcType="BIGINT" property="total_amount" />
+    <result column="nonpay_amount" jdbcType="BIGINT" property="nonpay_amount" />
+    <result column="user_fullname" jdbcType="VARCHAR" property="user_fullname" />
+    <result column="user_tel" jdbcType="VARCHAR" property="user_tel" />
+    <result column="user_email" jdbcType="VARCHAR" property="user_email" />
+    <result column="law_group_name" jdbcType="VARCHAR" property="law_group_name" />
+    <result column="last_deduct_time" jdbcType="TIMESTAMP" property="last_deduct_time" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+  
+  <resultMap id="GeneralDeductRecordVo" type="cn.repeatlink.module.usercenter.vo.GeneralDeductRecordVo">
+    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="card_no" jdbcType="VARCHAR" property="card_no" />
+    <result column="deduct_time" jdbcType="TIMESTAMP" property="deduct_time" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+  
+</mapper>

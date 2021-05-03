@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.general.mapper.GeneralOrderMapper">
+  
+  <select id="getGeneralUserList" resultMap="cn.repeatlink.module.general.mapper.BaseMapper.GeneralOrderItemVo">
+  	SELECT
+		ug.user_id,
+		ug.fullname AS `user_fullname`,
+		ug.email AS `user_email`,
+		uga.phone_number AS `user_tel`,
+		lg.group_name AS `law_group_name`,
+		ep.`status`,
+		SUM( epo.actual_price ) AS `total_amount`,
+		SUM( IF ( epo.pay_tag != 1, epo.actual_price, 0 ) ) AS `nonpay_amount`,
+		MAX( odr.create_time ) AS `last_deduct_time` 
+	FROM
+		( SELECT ep.* FROM ( SELECT * FROM estate_protection ORDER BY customer_id, create_time DESC ) ep GROUP BY ep.customer_id ) ep
+		LEFT JOIN user_general ug ON ug.user_id = ep.customer_id
+		LEFT JOIN user_general_attribute uga ON uga.user_id = ug.user_id
+		LEFT JOIN law_group lg ON lg.group_id = ug.law_group_id
+		LEFT JOIN estate_protection_order epo ON epo.customer_id = ug.user_id 
+		AND epo.`status` = 1
+		LEFT JOIN om_deduction_record odr ON odr.order_no = epo.order_no 
+	<where>
+		AND ug.user_id IS NOT NULL 
+		<if test="fullname != null and fullname != ''">
+		AND ug.fullname LIKE CONCAT('%', #{fullname}, '%')
+		</if>
+		<if test="group_name != null and group_name != ''">
+		AND lg.group_name LIKE CONCAT('%', #{group_name}, '%')
+		</if>
+		<if test="pay_status != null and pay_status != '' or pay_status == 0">
+		AND epo.pay_tag = #{pay_status}
+		</if>
+		<if test="join_status != null and join_status != '' or join_status == 0">
+		AND ep.`status` = #{join_status}
+		</if>
+	</where>
+	GROUP BY
+		ug.user_id 
+	ORDER BY
+		`last_deduct_time` DESC
+  </select>
+  
+  <select id="getUserDeductList" resultMap="cn.repeatlink.module.general.mapper.BaseMapper.GeneralDeductRecordVo">
+    SELECT
+		epo.deduct_time,
+		epo.actual_price AS `amount`,
+		epo.`status`,
+		SUBSTRING_INDEX( GROUP_CONCAT( odr.card_no ORDER BY odr.create_time DESC ), ',', 1 ) AS `card_no` 
+	FROM
+		(
+		SELECT
+		IF
+			( epo.pay_time IS NULL, epo.create_time, epo.pay_time ) AS `deduct_time`,
+			epo.actual_price,
+			epo.order_no,
+		IF
+			( epo.pay_tag != 1, 0, 1 ) AS `status` 
+		FROM
+			estate_protection_order epo 
+		WHERE
+			epo.customer_id = #{userId} 
+		) epo
+		LEFT JOIN om_deduction_record odr ON odr.order_no = epo.order_no 
+	GROUP BY
+		epo.order_no 
+	ORDER BY
+		deduct_time DESC
+  </select>
+  
+</mapper>

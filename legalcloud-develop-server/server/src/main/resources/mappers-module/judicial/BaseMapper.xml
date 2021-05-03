@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.judicial.mapper.BaseMapper">
+  <resultMap id="EstatecaseBaseVo" type="cn.repeatlink.module.judicial.vo.estatecase.EstatecaseBaseVo">
+    <result column="case_id" jdbcType="VARCHAR" property="case_id" />
+    <result column="case_name" jdbcType="VARCHAR" property="case_name" />
+    <result column="assigned_to" jdbcType="VARCHAR" property="assigned_to" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="start_date" />
+    <result column="step_seller_verify" jdbcType="SMALLINT" property="step_seller_verify" />
+    <result column="step_buyer_input" jdbcType="SMALLINT" property="step_buyer_input" />
+    <result column="step_deal_finish" jdbcType="SMALLINT" property="step_deal_finish" />
+    <result column="step_reg_finish" jdbcType="SMALLINT" property="step_reg_finish" />
+    <result column="fetch_api" jdbcType="SMALLINT" property="fetch_api" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="complete_time" jdbcType="TIMESTAMP" property="complete_time" />
+    <result column="user_judicial_id" jdbcType="VARCHAR" property="user_judicial_id" />
+    <result column="_orderStr" jdbcType="VARCHAR" property="_orderStr" />
+  </resultMap>
+  <resultMap id="EstateUserInfo" type="cn.repeatlink.module.judicial.vo.estate.EstateUserInfo">
+  	<result column="estate_id" jdbcType="VARCHAR" property="estate_id" />
+  	<result column="house_id" jdbcType="VARCHAR" property="house_id" />
+  	<result column="addr" jdbcType="VARCHAR" property="addr" />
+  	<result column="addr_code" jdbcType="VARCHAR" property="addr_code" />
+  	<result column="addr2" jdbcType="VARCHAR" property="addr2" />
+  	<result column="type" jdbcType="VARCHAR" property="type" />
+  	<result column="create_time" jdbcType="VARCHAR" property="create_time" />
+  </resultMap>
+  <resultMap id="SaleUserInfo" type="cn.repeatlink.module.judicial.vo.user.SaleUserInfo">
+  	<result column="user_id" jdbcType="VARCHAR" property="user_id" />
+  	<result column="fullname" jdbcType="VARCHAR" property="fullname" />
+  	<result column="fullname_kana" jdbcType="VARCHAR" property="fullname_kana" />
+  	<result column="gender" jdbcType="SMALLINT" property="gender" />
+  	<result column="verify" jdbcType="VARCHAR" property="verify" />
+  	<result column="addr" jdbcType="VARCHAR" property="addr" />
+  </resultMap>
+  <resultMap id="NotifyRowInfo" type="cn.repeatlink.module.judicial.vo.notify.NotifyRowInfo">
+  	<result column="notify_id" jdbcType="VARCHAR" property="notify_id" />
+  	<result column="title" jdbcType="VARCHAR" property="title" />
+  	<result column="sender" jdbcType="VARCHAR" property="sender" />
+  	<result column="status" jdbcType="SMALLINT" property="status" />
+  	<result column="send_time" jdbcType="TIMESTAMP" property="send_time" />
+  </resultMap>
+  <resultMap id="NotifyDetailInfo" type="cn.repeatlink.module.judicial.vo.notify.NotifyDetailInfo">
+  	<result column="notify_id" jdbcType="VARCHAR" property="notify_id" />
+  	<result column="title" jdbcType="VARCHAR" property="title" />
+  	<result column="sender" jdbcType="VARCHAR" property="sender" />
+  	<result column="content" jdbcType="VARCHAR" property="content" />
+  	<result column="status" jdbcType="SMALLINT" property="status" />
+  	<result column="send_time" jdbcType="TIMESTAMP" property="send_time" />
+  </resultMap>
+  
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.LawBizMapper">
+  
+  <select id="searchApplyList" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.LawApplyItemVo">
+    SELECT
+		id,
+		corp_name,
+		applicant_name,
+		applicant_phone,
+		create_time,
+		applicant_email,
+		`status` 
+	FROM
+		law_apply
+	<where>
+		<![CDATA[ AND `status` <> 0 ]]>
+		<if test="status != null and status != ''">
+		AND `status` = #{status}
+		</if>
+		<if test="apply_date != null and apply_date != ''">
+		AND DATE_FORMAT(`create_time`, '%Y-%m-%d') = #{apply_date}
+		</if>
+		<if test="corp_name != null and corp_name != ''">
+		AND corp_name like concat('%', #{corp_name}, '%')
+		</if>
+		<if test="applicant_name != null and applicant_name != ''">
+		AND applicant_name like concat('%', #{applicant_name}, '%')
+		</if>
+	</where>
+	ORDER BY create_time desc
+  </select>
+  
+  <select id="getApplyForUpdate" resultMap="cn.repeatlink.common.mapper.LawApplyMapper.BaseResultMap">
+  	select * from law_apply where id=#{applyId} for update
+  </select>
+  
+  <select id="searchGroupList" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.LawGroupItemVo">
+    SELECT
+		g.group_id,
+		gu.create_time,
+		gu.fullname AS `staff`,
+		g.group_name,
+		gu.`status`,
+		gu.login_id,
+		gu.email 
+	FROM
+		law_group g
+		LEFT JOIN law_group_user gu ON gu.group_id = g.group_id
+	<where>
+		<if test="status != null and status != '' or status == 0">
+		AND gu.`status` = #{status}
+		</if>
+		<if test="reg_date != null and reg_date != ''">
+		AND DATE_FORMAT(gu.`create_time`, '%Y-%m-%d') = #{reg_date}
+		</if>
+		<if test="group_name != null and group_name != ''">
+		AND g.group_name like concat('%', #{group_name}, '%')
+		</if>
+		<if test="staff_name != null and staff_name != ''">
+		AND gu.fullname like concat('%', #{staff_name}, '%')
+		</if>
+	</where>
+	ORDER BY gu.create_time desc
+  </select>
+  
+  <select id="getGroupForUpdate" resultMap="cn.repeatlink.common.mapper.LawGroupMapper.BaseResultMap">
+  	select * from law_group where group_id=#{groupId} for update
+  </select>
+  
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.car.dao.BusCustomerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wk.car.pojo.BusCustomer">
+        <id column="identity" property="identity" />
+        <result column="custname" property="custname" />
+        <result column="sex" property="sex" />
+        <result column="address" property="address" />
+        <result column="phone" property="phone" />
+        <result column="career" property="career" />
+        <result column="createtime" property="createtime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        identity, custname, sex, address, phone, career, createtime
+    </sql>
+    <select id="queryAllCustomer" resultType="com.wk.car.pojo.BusCustomer">
+        select
+        <include refid="Base_Column_List"/>
+        from bus_customer
+        <where>
+            <if test="identity!=null and identity!=''">
+                <bind name="identity" value=" '%' + identity + '%' "/>
+                and identity like #{identity}
+            </if>
+            <if test="custname!=null and custname!=''">
+                <bind name="custname" value=" '%' + custname + '%' "/>
+                and custname like #{custname}
+            </if>
+            <if test="address!=null and address!=''">
+                <bind name="address" value=" '%' + address + '%' "/>
+                and address like #{address}
+            </if>
+            <if test="phone!=null and phone!=''">
+                <bind name="phone" value=" '%' + phone + '%' "/>
+                and phone like #{phone}
+            </if>
+            <if test="career!=null and career!=''">
+                <bind name="career" value=" '%' + career + '%' "/>
+                and career like #{career}
+            </if>
+            <if test="sex!=null">
+                and sex =#{sex}
+            </if>
+        </where>
+        order by createtime desc
+    </select>
+    <select id="queryCustomerArea" resultType="com.wk.sys.pojo.Stat">
+        SELECT
+            address NAME,
+            count( 1 )  VALUE
+        FROM
+            `bus_customer`
+        GROUP BY
+            address
+    </select>
+
+</mapper>

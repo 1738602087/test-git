@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<script type="text/javascript">//json的本质是一个对象
+			// json的定义：json 是由键值对组成，并且由花括号（大括号）包围。
+			// 每个键由引号引起来，键和值之间使用冒号进行分隔，多组键值对之间进行
+			// 逗号进行分隔。
+           /*这里我们首先定义一个json名字为jsonObj,格式符合我们上面定义的。
+           * 这里我们的key1，key2*****key6都是一个键，所以我们的key1**key6都是用
+           * 引号""引起来，键和值之间使用冒号进行分隔，所以我们的键key1和值12中间
+           * 使用了这个: 。  值包含三种数据类型，1：单个数据，有number，
+           * String，boolean和null四种类型数据；2：多个有序的数据：数组；
+           * 3：多个无序的数据：对象。,多个键值对之间使用逗号进行分隔，所以
+           * 我们"key1":12与这个"key2":"abc"中间使用了逗号,*/
+           //一个复杂的javascript对象，
+			var jsonObj = {
+				"key1":12,  //json格式的第一种单个数据中的number
+				"key2":"abc", //json格式的第一种单个数据中的String
+				"key3":true,  //json格式的第一种单个数据中的Boolean
+				"key4":[11,"arr",false],//json格式的第二种多个有序的数据：数组
+				"key5":{               //json格式的第二种多个无序的数据：对象
+					"key5_1" : 551,
+					"key5_2" : "key5_2_value"
+				},
+				"key6":[{ //json数组里面套对象，最复杂的情形。
+					"key6_1_1":6611,
+					"key6_1_2":"key6_1_2_value"
+				},{
+					"key6_2_1":6621,
+					"key6_2_2":"key6_2_2_value"
+				}]
+			};
+			/*json的本质就是一个对象.json的key我们就可以理解为对象的一个属性，
+			*json 中的key访问就跟访问对象的属性一样： json 对象.key*/
+			// alert(typeof(jsonObj));// object
+			// alert(jsonObj.key1); //12
+			// alert(jsonObj.key2); // abc
+			// alert(jsonObj.key3); // true
+			// alert(jsonObj.key4);// 得到数组[11,"arr",false]
+		     /*上面得到数组就是和我们自己定义的数组是一样的var arr=[11,"arr",false]
+		     * 所以我们也可以对数组中的值进行遍历。*/
+			// json 中 数组值的遍历
+			// for(var i = 0; i < jsonObj.key4.length; i++) {
+			// 	alert(jsonObj.key4[i]);
+			// }
+              alert(jsonObj.key5);//[object,Object] json本质是一个对象
+             alert(JSON.stringify(jsonObj.key5));//{"key5_1" : 551,"key5_2" : "key5_2_value"}
+			// alert(jsonObj.key5.key5_1);//551
+			// alert(jsonObj.key5.key5_2);//key5_2_value
+			// alert( jsonObj.key6 );//得到json数组，数组中每一个元素都是对象(json对象的数组)，
+			//
+			// // 取出来每一个元素都是json对象
+			// var jsonItem = jsonObj.key6[0];
+			// // alert( jsonItem.key6_1_1 ); //6611
+			// alert( jsonItem.key6_1_2 ); //key6_1_2_value
+
+			// alert(jsonObj);
+
+			// 把json对象转换成为 json字符串
+			var jsonObjString = JSON.stringify(jsonObj); // 特别像 Java中对象的toString，把对象的内容都转换成字符串
+			alert(jsonObjString);
+			// 把json字符串。转换成为json对象
+			var jsonObj2 = JSON.parse(jsonObjString);
+			alert(jsonObj2.key1);// 12
+			alert(jsonObj2.key2);// abc
+
+			// json的访问
+			// json对象转字符串
+			// json字符串转json对象
+		</script>
+	</head>
+	<body>
+		
+	</body>
+</html>

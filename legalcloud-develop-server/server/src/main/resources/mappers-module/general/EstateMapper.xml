@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.general.mapper.GeneralEstateMapper">
+  
+  <select id="getEstateListByUserId" resultMap="cn.repeatlink.module.general.mapper.BaseMapper.EstateInfo">
+    SELECT
+		e.*,
+		if(e.pdf_path is null or trim(e.pdf_path)='', 0, 1) as `has_pdf`
+	FROM
+		( SELECT * FROM estate_user WHERE user_general_id = #{userId} AND `status` = 1 ) u
+		JOIN estate_info e ON e.estate_id = u.estate_id 
+	WHERE
+		e.`status` = 1
+  </select>
+  
+  <select id="getEstateUserByEstateId" resultMap="cn.repeatlink.module.general.mapper.BaseMapper.EstateUserInfo">
+    SELECT
+    	u.user_id,
+		u.fullname,
+		u.fullname_kana,
+		u.gender,
+		u.birthday,
+		CONCAT( IFNULL(u.addr1,''), IFNULL(u.addr2,''), IFNULL(u.addr3,'') ) AS addr,
+		IF( uf.id IS NULL, 0, 1 ) AS face_flag, 
+		IFNULL( uf.update_time, uf.create_time) AS face_update_time
+	FROM
+		( SELECT * FROM estate_user WHERE estate_id = #{estateId} AND `status` = 1 ) eu
+		LEFT JOIN user_general u ON u.user_id = eu.user_general_id
+		LEFT JOIN user_general_face uf ON u.user_id = uf.user_general_id
+	GROUP BY
+		eu.user_general_id
+  </select>
+  
+</mapper>

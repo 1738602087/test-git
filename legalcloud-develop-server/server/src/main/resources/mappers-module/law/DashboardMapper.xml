@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.DashboardMapper">
+
+    <!-- 获取某月新规登录人数 -->
+    <select id="getNewNumberByMonthByJudicial" resultType="Long">
+		SELECT
+			count( DISTINCT ce.user_general_id ) 
+		FROM
+			( SELECT * FROM case_estate WHERE user_judicial_id = #{userId} AND DATE_FORMAT( create_time, '%Y-%m' ) = #{month} ) ce
+			LEFT JOIN case_buyer cb ON cb.case_id = ce.case_id
+	</select>
+
+    <select id="getNewNumberByMonthByGroup" resultType="Long">
+		SELECT
+			count( DISTINCT ce.user_general_id ) 
+		FROM
+			( SELECT * FROM case_estate WHERE user_judicial_id = #{groupId} AND DATE_FORMAT( create_time, '%Y-%m' ) = #{month} ) ce
+			LEFT JOIN case_buyer cb ON cb.case_id = ce.case_id
+	</select>
+
+    <!-- 获取新规登录人数推移 -->
+    <select id="getNewNumberTranByJudicial" resultType="java.util.Map">
+
+    </select>
+
+    <select id="getNewNumberTranByGroup" resultType="java.util.Map">
+
+    </select>
+
+    <!-- 获取案件进行数 -->
+    <select id="getProcessCaseCountByMonthByJudicial" resultType="Long">
+        SELECT
+        count( DISTINCT ce.case_id )
+        FROM
+        ( SELECT * FROM case_estate WHERE user_judicial_id = #{userId} AND DATE_FORMAT( create_time, '%Y-%m' ) =
+        #{month} ) ce
+        LEFT JOIN case_buyer cb ON cb.case_id = ce.case_id
+        <where>
+            AND ce.`status` = ${@cn.repeatlink.module.judicial.common.Constant$CaseStatus@VALID}
+            AND ce.step_reg_finish != ${@cn.repeatlink.module.judicial.common.Constant$CaseStepVal@COMPLETED}
+        </where>
+    </select>
+
+    <select id="getProcessCaseCountByMonthByGroup" resultType="Long">
+        SELECT
+        count( DISTINCT ce.case_id )
+        FROM
+        ( SELECT * FROM case_estate WHERE DATE_FORMAT( create_time, '%Y-%m' ) = #{month} ) ce
+        LEFT JOIN case_buyer cb ON cb.case_id = ce.case_id
+        LEFT JOIN user_judicial uj ON uj.user_id = ce.user_judicial_id
+        <where>
+            AND ce.`status` = ${@cn.repeatlink.module.judicial.common.Constant$CaseStatus@VALID}
+            AND ce.step_reg_finish != ${@cn.repeatlink.module.judicial.common.Constant$CaseStepVal@COMPLETED}
+            AND uj.group_id = #{groupId}
+        </where>
+    </select>
+
+    <!-- 获取卖上金额 -->
+    <select id="getSaleCountByMonthByJudicial" resultType="Long">
+		SELECT
+			count( DISTINCT ce.case_id ) 
+		FROM
+			( SELECT * FROM case_estate WHERE user_judicial_id = #{userId} AND DATE_FORMAT( create_time, '%Y-%m' ) = #{month} ) ce
+			LEFT JOIN case_buyer cb ON cb.case_id = ce.case_id
+	</select>
+
+    <select id="getSaleCountByMonthByGroup" resultType="Long">
+
+    </select>
+
+    <!--获取新规用户信息-->
+    <select id="getGeneralInfos" resultType="cn.repeatlink.module.law.vo.user.GeneralInfo">
+		select
+			u.email,u.user_name,u.gender,u.tel,u.postcode,TIMESTAMPDIFF(YEAR, u.birthday, CURDATE())as age,CONCAT(IFNULL(u.addr1,''),IFNULL(u.addr2,''),'  ',IFNULL(u.addr3,''))as addr,
+			g.position,g.marriage,g.children as childrens,DATE_FORMAT(u.create_time, '%Y-%m-%d') create_time
+		from
+			user_general u left join user_general_attribute g on u.user_id = g.user_id 
+		<where>
+			<if test="groupId != null and groupId != ''">
+				and u.law_group_id = #{groupId}
+			</if>
+			<if test="judicialUserId != null and judicialUserId != ''">
+				and u.judicial_id = #{judicialUserId}
+			</if>
+			<if test="star != null and star != '' and end != null and end != ''">
+				and u.create_time between  #{star} and #{end}
+			</if>
+		</where>
+		order by u.create_time desc
+	</select>
+
+    <!--获取案件信息-->
+    <select id="getCaseInfos" resultType="cn.repeatlink.module.law.vo.cases.CaseInfo">
+	SELECT
+		ce.case_name,
+		DATE_FORMAT( ce.start_date, '%Y-%m-%d' ) start_date,
+		cer.num,
+		cer.addr,
+	IF
+		( cs.id IS NULL, - 1, ce.step_seller_verify ) step_seller_verify,
+		ce.step_buyer_input,
+		ce.step_reg_finish,
+		ce.step_deal_finish,
+		DATE_FORMAT( ce.complete_time, '%Y-%m-%d' ) AS over_time,
+		ce.`status`,
+		uj.fullname AS jud_name 
+	FROM
+		case_estate ce
+		LEFT JOIN (
+		SELECT
+			case_id,
+			estate_id,
+			GROUP_CONCAT( CONCAT( IFNULL(addr,''), IFNULL(addr2,''), IFNULL(house_id,'') ) ) addr,
+			COUNT( case_id ) AS num 
+		FROM
+			case_estate_record 
+		WHERE
+			`status` = 1 
+		GROUP BY
+			case_id 
+		) cer ON ce.case_id = cer.case_id
+		LEFT JOIN ( SELECT user_id, group_id, fullname FROM user_judicial ) uj ON ce.assigned_to = uj.user_id
+		LEFT JOIN case_seller cs ON ce.case_id = cs.case_id 
+		AND cs.`status` = 1 
+	<where>
+		<if test="groupId != null and groupId != ''">
+			and uj.group_id = #{groupId}
+		</if>
+		<if test="judicialUserId != null and judicialUserId != ''">
+			and ce.user_judicial_id = #{judicialUserId}
+		</if>
+		<if test="star != null and star != '' and end != null and end != ''">
+			and ce.start_date between  #{star} and #{end}
+		</if>
+	</where>
+		GROUP BY ce.case_id
+		ORDER BY ce.create_time DESC
+	</select>
+
+	<!--获取服务支付数据-->
+	<select id="getServerInfos" resultType="cn.repeatlink.module.law.vo.dash.SaleRecordInfo">
+	SELECT
+		a.card_no,
+		ug.fullname,
+		a.credit_company_name,
+		a.amount,
+		a.`desc`,
+		a.deduction_date,
+		a.`status`,
+		lg.group_name AS `group_name`,
+		DATE_FORMAT( o.start_date, '%Y-%m-%d' ) AS start_date 
+	FROM
+		om_deduction_record a
+		LEFT JOIN user_general ug ON ug.user_id = a.customer_id
+		LEFT JOIN law_group lg ON lg.group_id = ug.law_group_id
+		LEFT JOIN estate_protection_order o ON o.order_no = a.order_no
+	<where>
+		<if test="star != null and star != '' and end != null and end != ''">
+			and a.create_time between #{star} and #{end}
+		</if>
+	</where>
+	ORDER BY a.create_time DESC
+	</select>
+	
+	<!--获取事务所一览数据-->
+	<select id="getLawGorupInfos" resultType="cn.repeatlink.module.law.vo.dash.LawGroupItemVo">
+	SELECT
+		group_name,
+		representer,
+		staff,
+		tel,
+		email,
+		addr,
+		DATE_FORMAT( create_time, '%Y-%m-%d' ) AS create_date 
+	FROM
+		law_group 
+	<where>
+		AND `status` = 1 
+		<if test="start_time != null and start_time != '' and end_time != null and end_time != ''">
+			and create_time between #{start_time} and #{end_time}
+		</if>
+	</where>
+	ORDER BY
+		create_time DESC
+	</select>
+
+</mapper>

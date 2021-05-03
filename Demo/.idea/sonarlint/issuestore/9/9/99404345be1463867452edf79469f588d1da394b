@@ -1,0 +1,16 @@
+
+_
+java:S1192&"IDefine a constant instead of duplicating this literal "password" 3 times.(ÜÌ¡®
+z
+java:S1192""_Define a constant instead of duplicating this literal "jdbc:mysql://localhost:3306/mp" 4 times.(¯Ş‘àúÿÿÿÿ
+l
+java:S11921"VDefine a constant instead of duplicating this literal "com.mysql.jdbc.Driver" 3 times.(²“ÍÔ
+K
+java:S1128	"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ
+C
+java:S49251"-Remove this "Class.forName()", it is useless.(²“ÍÔ
+C
+java:S4925F"-Remove this "Class.forName()", it is useless.(²“ÍÔ
+H
+java:S4925_"-Remove this "Class.forName()", it is useless.(¹µÖÁüÿÿÿÿ
+Q	java:S125a"<This block of commented-out lines of code should be removed.(î²‘æ

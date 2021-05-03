@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxy.dao.CustomerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lxy.model.Customer">
+        <id column="cust_id" property="custId" />
+        <result column="cust_name" property="custName" />
+        <result column="cust_user_id" property="custUserId" />
+        <result column="cust_create_id" property="custCreateId" />
+        <result column="cust_source" property="custSource" />
+        <result column="cust_industry" property="custIndustry" />
+        <result column="cust_level" property="custLevel" />
+        <result column="cust_linkman" property="custLinkman" />
+        <result column="cust_phone" property="custPhone" />
+        <result column="cust_mobile" property="custMobile" />
+        <result column="cust_zipcode" property="custZipcode" />
+        <result column="cust_address" property="custAddress" />
+        <result column="cust_createtime" property="custCreatetime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        cust_id, cust_name, cust_user_id, cust_create_id, cust_source, cust_industry, cust_level, cust_linkman, cust_phone, cust_mobile, cust_zipcode, cust_address, cust_createtime
+    </sql>
+
+</mapper>

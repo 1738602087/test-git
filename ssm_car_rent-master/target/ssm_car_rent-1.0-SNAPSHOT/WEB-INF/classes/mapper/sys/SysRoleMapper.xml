@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wk.sys.dao.SysRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wk.sys.pojo.SysRole">
+        <id column="roleid" property="roleid" />
+        <result column="rolename" property="rolename" />
+        <result column="roledesc" property="roledesc" />
+        <result column="available" property="available" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        roleid, rolename, roledesc, available
+    </sql>
+    <select id="queryAllRole" resultType="com.wk.sys.pojo.SysRole">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role
+        <where>
+            <if test="rolename !=null and rolename !=''">
+                <bind name="rolename" value=" '%' + rolename + '%' "/>
+                and rolename like #{rolename}
+            </if>
+            <if test="roledesc !=null and roledesc !=''">
+                <bind name="roledesc" value=" '%' + roledesc + '%' "/>
+                and roledesc like #{roledesc}
+            </if>
+            <if test="available !=null">
+                and available = #{available,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+    <select id="selectByUid" resultType="com.wk.sys.pojo.SysRole">
+        SELECT
+            sr.roleid
+        FROM
+            sys_role sr,
+            sys_role_user sru
+        WHERE
+            sr.roleid = sru.rid
+            AND sru.uid = #{userid}
+            AND sr.available = 1
+    </select>
+
+</mapper>

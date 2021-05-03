@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Springmvc-demo/Springmvc-demo.iml" filepath="$PROJECT_DIR$/Springmvc-demo/Springmvc-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Springmvc-demo2/Springmvc-demo2.iml" filepath="$PROJECT_DIR$/Springmvc-demo2/Springmvc-demo2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ThreeTierSample/ThreeTierSample.iml" filepath="$PROJECT_DIR$/ThreeTierSample/ThreeTierSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/boot-crm/boot-crm.iml" filepath="$PROJECT_DIR$/boot-crm/boot-crm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/crm/crm.iml" filepath="$PROJECT_DIR$/crm/crm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web-demo/web-demo.iml" filepath="$PROJECT_DIR$/web-demo/web-demo.iml" />
+    </modules>
+  </component>
+</project>

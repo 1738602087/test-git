@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.BaseMapper">
+  <resultMap id="CaseItemVo" type="cn.repeatlink.module.law.vo.cases.CaseItemVo">
+    <result column="case_id" jdbcType="VARCHAR" property="case_id" />
+    <result column="case_name" jdbcType="VARCHAR" property="case_name" />
+    <result column="assigned_to" jdbcType="VARCHAR" property="staff" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="start_date" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="complete_time" jdbcType="TIMESTAMP" property="end_date" />
+    <result column="step_seller_verify" jdbcType="SMALLINT" property="step_seller_verify" />
+    <result column="step_buyer_input" jdbcType="SMALLINT" property="step_buyer_input" />
+    <result column="step_deal_finish" jdbcType="SMALLINT" property="step_deal_finish" />
+    <result column="step_reg_finish" jdbcType="SMALLINT" property="step_reg_finish" />
+    <result column="fetch_api" jdbcType="SMALLINT" property="fetch_api" />
+    <result column="_estate_names" jdbcType="VARCHAR" property="_estate_names" />
+    <result column="_estate_code_names" jdbcType="VARCHAR" property="_estate_code_names" />
+    <result column="_buyer_names" jdbcType="VARCHAR" property="_buyer_names" />
+    <result column="_staff_id" jdbcType="VARCHAR" property="_staff_id" />
+    <result column="user_judicial_id" jdbcType="VARCHAR" property="user_judicial_id" />
+  </resultMap>
+  <resultMap id="JudicialUserVo" type="cn.repeatlink.module.law.vo.user.JudicialUserVo">
+    <result column="user_id" jdbcType="VARCHAR" property="user_id" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="reg_date" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="invalid_time" jdbcType="TIMESTAMP" property="invalid_date" />
+    <result column="fullname_kana" jdbcType="VARCHAR" property="fullname_kana" />
+    <result column="famname" jdbcType="VARCHAR" property="famname" />
+    <result column="famname_kana" jdbcType="VARCHAR" property="famname_kana" />
+    <result column="givename" jdbcType="VARCHAR" property="givename" />
+    <result column="givename_kana" jdbcType="VARCHAR" property="givename_kana" />
+  </resultMap>
+  <resultMap id="JudicialUserApplyVo" type="cn.repeatlink.module.law.vo.user.JudicialUserApplyVo">
+  	<result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="send_time" />
+  </resultMap>
+  <resultMap id="LawUserInfo" type="cn.repeatlink.module.law.vo.user.LawUserInfo">
+  	<result column="group_name" jdbcType="VARCHAR" property="group_name" />
+  	<result column="login_id" jdbcType="VARCHAR" property="login_id" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="avatar" jdbcType="BINARY" property="avatar" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="fullname_kana" jdbcType="VARCHAR" property="fullname_kana" />
+    <result column="gender" jdbcType="SMALLINT" property="gender" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="sendmail_flag" jdbcType="TINYINT" property="sendmail_flag" />
+  </resultMap>
+  <resultMap id="FeeItemVo" type="cn.repeatlink.module.law.vo.fee.FeeItemVo">
+  	<result column="fee_id" jdbcType="VARCHAR" property="fee_id" />
+  	<result column="amount" jdbcType="BIGINT" property="money" />
+    <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+    <result column="credit_company_name" jdbcType="VARCHAR" property="credit_company_name" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="date" jdbcType="DATE" property="date" />
+  </resultMap>
+  <resultMap id="QuitFeeItemVo" type="cn.repeatlink.module.law.vo.fee.QuitFeeItemVo">
+  	<result column="user_id" jdbcType="VARCHAR" property="user_id" />
+    <result column="login_id" jdbcType="VARCHAR" property="login_id" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="start_date" jdbcType="DATE" property="start_date" />
+    <result column="quit_date" jdbcType="DATE" property="quit_date" />
+    <result column="last_money" jdbcType="BIGINT" property="last_money" />
+    <result column="total_money" jdbcType="BIGINT" property="total_money" />
+    <result column="late_fees" jdbcType="BIGINT" property="late_fees" />
+    <result column="card_no" jdbcType="VARCHAR" property="card_no" />
+  </resultMap>
+  <resultMap id="UseFeeItemVo" type="cn.repeatlink.module.law.vo.fee.UseFeeItemVo">
+  	<result column="user_id" jdbcType="VARCHAR" property="user_id" />
+    <result column="login_id" jdbcType="VARCHAR" property="login_id" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="start_date" jdbcType="DATE" property="start_date" />
+    <result column="last_date" jdbcType="DATE" property="last_date" />
+    <result column="last_money" jdbcType="BIGINT" property="last_money" />
+    <result column="total_money" jdbcType="BIGINT" property="total_money" />
+    <result column="late_fees" jdbcType="BIGINT" property="late_fees" />
+    <result column="card_no" jdbcType="VARCHAR" property="card_no" />
+  </resultMap>
+  
+  <resultMap id="LawApplyItemVo" type="cn.repeatlink.module.usercenter.vo.LawApplyItemVo">
+  	<result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="apply_time" />
+    <result column="corp_name" jdbcType="VARCHAR" property="corp_name" />
+    <result column="applicant_name" jdbcType="VARCHAR" property="applicant_name" />
+    <result column="applicant_phone" jdbcType="VARCHAR" property="applicant_phone" />
+    <result column="applicant_email" jdbcType="VARCHAR" property="applicant_email" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+  
+  <resultMap id="LawGroupItemVo" type="cn.repeatlink.module.usercenter.vo.LawGroupItemVo">
+  	<result column="group_id" jdbcType="VARCHAR" property="group_id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="reg_time" />
+    <result column="group_name" jdbcType="VARCHAR" property="group_name" />
+    <result column="staff" jdbcType="VARCHAR" property="staff_name" />
+    <result column="login_id" jdbcType="VARCHAR" property="login_id" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+  
+</mapper>

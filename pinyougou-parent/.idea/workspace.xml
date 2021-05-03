@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d1c578a4-ba3a-4ea1-9106-41e03befc286" name="Default" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>../brand/delete.do?ids='+ids</find>
+      <find>ang</find>
+      <find>save</find>
+      <find>保存</find>
+      <find>修改</find>
+      <find>新建</find>
+      <find>findTemplateList</find>
+      <find>findPage</find>
+      <find>findone</find>
+      <find>reloadList</find>
+      <find>insert</find>
+      <find>JSON.stringify(response)</find>
+      <find>ng-init</find>
+      <find>list</find>
+      <find>search</find>
+      <find>findAll</find>
+      <find>查询</find>
+      <find>logout</find>
+      <find>{{loginName}}</find>
+      <find>p</find>
+      <find>注销</find>
+      <find>showLoginName()</find>
+      <find>ng-binding</find>
+      <find>findB</find>
+      <find>查询下级</find>
+      <find>BaseResultMap</find>
+      <find>删除</find>
+      <find>搜索</find>
+      <find>selectItemCat1List</find>
+      <find>商品分类</find>
+    </findStrings>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="E:\develop\Maven_Repository" />
+        <option name="mavenHome" value="E:/develop/apache-maven-3.5.2" />
+        <option name="userSettingsFile" value="E:\develop\apache-maven-3.5.2\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="vmOptions" value="-Dfile.encoding=GBK" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1rh2LF7y1FOazAmei8CFOQPJRFW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="ItemcatServ&#9;PSI&#9;JAVA://com.pinyougou.sellergoods.service.impl.ItemCatServiceImpl&#10;itemcat&#9;PSI&#9;JAVA://com.pinyougou.shop.controller.ItemCatController&#10;goodsContro&#9;null&#9;null&#10;Brand&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-sellergoods-interface/src/main/java/com/pinyougou/sellergoods/service/BrandService.java&#10;s&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-search-web/src/main/webapp/js/controller/searchController.js&#10;log&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/java/com/pinyougou/manager/controller/LoginController.java&#10;Example&#9;null&#9;null&#10;goods.html&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-shop-web/src/main/webapp/admin/goods.html&#10;goodsSer&#9;null&#9;null&#10;GoodsC&#9;null&#9;null&#10;Goodsc&#9;PSI&#9;JAVA://com.pinyougou.shop.controller.GoodsController&#10;br&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/brandController.js&#10;item&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/itemCatController.js&#10;loginS&#9;null&#9;null&#10;indexC&#9;null&#9;null&#10;ind&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/pages/index.js&#10;index&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/pages/index.js&#10;spring-s&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/resources/spring/spring-security.xml&#10;Br&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/java/com/pinyougou/manager/controller/BrandController.java&#10;itemc&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/service/itemCatService.js&#10;ba&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/baseController.js&#10;brandc&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/brandController.js&#10;baseController&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/baseController.js&#10;base_pagination&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/base_pagination.js&#10;index.html&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-portal-web/src/main/webapp/index.html&#10;brand.html&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/admin/brand.html&#10;brand&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-pojo/src/main/java/com/pinyougou/pojo/TbBrand.java&#10;tbb&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-pojo/src/main/java/com/pinyougou/pojo/TbBrand.java&#10;brandService&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/service/brandService.js&#10;baseC&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/baseController.js&#10;brandC&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/brandController.js&#10;basec&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/baseController.js&#10;itemcatS&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/service/itemCatService.js&#10;itemCatCon&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/controller/itemCatController.js&#10;BrandServi&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-sellergoods-service/src/main/java/com/pinyougou/sellergoods/service/impl/BrandServiceImpl.java&#10;BrandServiceImpl&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/js/service/brandService.js&#10;brandcontroller&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/java/com/pinyougou/manager/controller/BrandController.java&#10;baseco&#9;null&#9;null&#10;findPage.do&#9;null&#9;null&#10;angular.&#9;null&#9;null&#10;home&#9;FILE&#9;file://E:/IdeaProjects/pinyougou-parent/pinyougou-manager-web/src/main/webapp/admin/home.html&#10;/login/name&#9;null&#9;null&#10;RedisTemplate&#9;FILE&#9;jar://E:/develop/Maven_Repository/org/springframework/data/spring-data-redis/2.1.2.RELEASE/spring-data-redis-2.1.2.RELEASE.jar!/org/springframework/data/redis/core/RedisTemplate.class" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.16148148" />
+    <property name="project.structure.side.proportion" value="0.34969324" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\IdeaProjects\pinyougou-parent\pinyougou-search-web\src\main\webapp\js" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.pinyougou.shop.controller" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\IdeaProjects\pinyougou-parent\pinyougou-search-web\src" />
+      <recent name="E:\IdeaProjects\pinyougou-parent\pinyougou-search-service" />
+      <recent name="E:\IdeaProjects\pinyougou-parent\pinyougou-search-interface\src" />
+      <recent name="E:\IdeaProjects\pinyougou-parent\pinyougou-search-interface" />
+      <recent name="E:\IdeaProjects\pinyougou-parent\pinyougou-search-service\src" />
+    </key>
+  </component>
+  <component name="RestServicesNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="Found 96 services " type="fcff1e1b:RestServiceStructure$RootNode" />
+        </path>
+        <path>
+          <item name="Found 96 services " type="fcff1e1b:RestServiceStructure$RootNode" />
+          <item name="pinyougou-manager-web" type="c588b436:RestServiceStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+    </configuration>
+    <configuration name="SolrUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.pinyougou.solrutil.SolrUtil" />
+      <module name="pinyougou-solr-util" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.pinyougou.solrutil.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SolrUtil" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\李向阳\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d1c578a4-ba3a-4ea1-9106-41e03befc286" name="Default" comment="" />
+      <created>1589265740700</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589265740700</updated>
+      <workItem from="1589265745852" duration="2432000" />
+      <workItem from="1590300855591" duration="736000" />
+      <workItem from="1590452619296" duration="4111000" />
+      <workItem from="1590473044155" duration="6838000" />
+      <workItem from="1590652742651" duration="1179000" />
+      <workItem from="1590722075152" duration="107000" />
+      <workItem from="1591100396475" duration="712000" />
+      <workItem from="1591923151825" duration="13001000" />
+      <workItem from="1592017019805" duration="12597000" />
+      <workItem from="1592090546616" duration="10420000" />
+      <workItem from="1592186159471" duration="4131000" />
+      <workItem from="1592274716651" duration="3771000" />
+      <workItem from="1592356633310" duration="2790000" />
+      <workItem from="1592440933595" duration="5711000" />
+      <workItem from="1592527149776" duration="1187000" />
+      <workItem from="1592533421977" duration="32000" />
+      <workItem from="1592537918711" duration="5508000" />
+      <workItem from="1592643870262" duration="1356000" />
+      <workItem from="1592722926707" duration="616000" />
+      <workItem from="1592724549246" duration="4277000" />
+      <workItem from="1592779339748" duration="4781000" />
+      <workItem from="1592881235472" duration="8757000" />
+      <workItem from="1592959357224" duration="1814000" />
+      <workItem from="1593410265533" duration="5704000" />
+      <workItem from="1593500658262" duration="1905000" />
+      <workItem from="1593522893733" duration="1774000" />
+      <workItem from="1593564101893" duration="4003000" />
+      <workItem from="1593650550578" duration="23246000" />
+      <workItem from="1595138085999" duration="1738000" />
+      <workItem from="1595649885009" duration="1614000" />
+      <workItem from="1595665833945" duration="419000" />
+      <workItem from="1595667103279" duration="665000" />
+      <workItem from="1595804018994" duration="1199000" />
+      <workItem from="1597116570108" duration="7368000" />
+      <workItem from="1598154168682" duration="26730000" />
+      <workItem from="1599817955348" duration="25543000" />
+      <workItem from="1600413201701" duration="671000" />
+      <workItem from="1600517424038" duration="93803000" />
+      <workItem from="1601178163155" duration="133000" />
+      <workItem from="1601178458174" duration="17325000" />
+      <workItem from="1601214213294" duration="70040000" />
+      <workItem from="1601866051406" duration="3350000" />
+      <workItem from="1601880361456" duration="279000" />
+      <workItem from="1601880830270" duration="164000" />
+      <workItem from="1601881836762" duration="23300000" />
+      <workItem from="1602504834964" duration="1369000" />
+      <workItem from="1602543742083" duration="23975000" />
+      <workItem from="1602809676611" duration="58410000" />
+      <workItem from="1603693932862" duration="10562000" />
+      <workItem from="1603959890937" duration="731000" />
+      <workItem from="1604063489578" duration="5265000" />
+      <workItem from="1604321957510" duration="615000" />
+      <workItem from="1604554997856" duration="3174000" />
+      <workItem from="1605223665092" duration="636000" />
+      <workItem from="1605662863704" duration="3530000" />
+      <workItem from="1605938750319" duration="6237000" />
+      <workItem from="1606035373542" duration="2084000" />
+      <workItem from="1607345132956" duration="11397000" />
+      <workItem from="1607563525178" duration="1218000" />
+      <workItem from="1607571433222" duration="1506000" />
+      <workItem from="1619413958339" duration="822000" />
+      <workItem from="1619441662765" duration="89000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="63" y="0" key="SettingsEditor" timestamp="1619414782044">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="63" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1619414782044" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>pinyougou-content-service:war</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Spring</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>pinyougou-search-interface</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.34969324" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: aopalliance:aopalliance:1.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

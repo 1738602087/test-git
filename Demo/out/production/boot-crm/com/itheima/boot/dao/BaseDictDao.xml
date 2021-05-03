@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.boot.dao.BaseDictDao">
+
+	<select id="getDictListByTypeCode" parameterType="string" resultType="com.itheima.boot.pojo.BaseDict">
+		SELECT * FROM `base_dict` WHERE dict_type_code=#{typeCode}
+	</select>
+</mapper>

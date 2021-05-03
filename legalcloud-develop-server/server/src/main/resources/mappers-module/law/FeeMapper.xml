@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.CustomerFeeMapper">
+  
+  <select id="getUsingFeeUserList" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.UseFeeItemVo">
+    SELECT
+		ep.start_date,
+		u.user_id,
+		u.login_id,
+		u.fullname,
+		MAX( r.deduction_date ) AS last_date,
+		SUBSTRING_INDEX( GROUP_CONCAT( r.amount ORDER BY r.deduction_date DESC ), ',', 1 ) AS last_money,
+		SUM( r.amount ) AS total_money,
+		r.card_no,
+		<![CDATA[ SUM( IF ( r.`status` <> ${@cn.repeatlink.module.law.common.Constant$OmRecordStatus@SUCCESS} AND r.`status` <> ${@cn.repeatlink.module.law.common.Constant$OmRecordStatus@INVALID} , r.amount, 0 ) ) AS late_fees ]]>
+	FROM
+		( SELECT * FROM estate_protection WHERE `status` = 1 ) ep
+		LEFT JOIN user_general u ON u.user_id = ep.customer_id
+		<![CDATA[ LEFT JOIN om_deduction_record r ON r.customer_id = ep.customer_id AND r.`status` <> ${@cn.repeatlink.module.law.common.Constant$OmRecordStatus@INVALID} ]]>
+	<where>
+		AND u.user_id IS NOT NULL
+		<if test="keyword != null and keyword != ''">
+		AND (u.login_id like concat('%', #{keyword}, '%') OR u.fullname like concat('%', #{keyword}, '%'))
+		</if>
+	</where>
+	GROUP BY u.user_id
+	ORDER BY ep.start_date DESC
+  </select>
+  
+  <select id="getQuitFeeUserList" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.QuitFeeItemVo">
+    SELECT
+		ep.start_date,
+		u.user_id,
+		u.login_id,
+		u.fullname,
+		ep.quit_date,
+		SUBSTRING_INDEX( GROUP_CONCAT( r.amount ORDER BY r.deduction_date DESC ), ',', 1 ) AS last_money,
+		SUM( r.amount ) AS total_money,
+		r.card_no,
+		<![CDATA[ SUM( IF ( r.`status` <> ${@cn.repeatlink.module.law.common.Constant$OmRecordStatus@SUCCESS} AND r.`status` <> ${@cn.repeatlink.module.law.common.Constant$OmRecordStatus@INVALID} , r.amount, 0 ) ) AS late_fees ]]>
+	FROM
+		( SELECT * FROM estate_protection WHERE `status` = 0 ) ep
+		LEFT JOIN user_general u ON u.user_id = ep.customer_id
+		<![CDATA[ LEFT JOIN om_deduction_record r ON r.customer_id = ep.customer_id AND r.`status` <> ${@cn.repeatlink.module.law.common.Constant$OmRecordStatus@INVALID} ]]>
+	<where>
+		AND u.user_id IS NOT NULL
+		<if test="keyword != null and keyword != ''">
+		AND (u.login_id like concat('%', #{keyword}, '%') OR u.fullname like concat('%', #{keyword}, '%'))
+		</if>
+	</where>
+	GROUP BY u.user_id
+	ORDER BY ep.start_date DESC
+  </select>
+  <select id="getCustomerFeeHistoryList" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.FeeItemVo">
+  	SELECT
+		card_no AS cardno,
+		credit_company_name,
+		amount,
+		deduction_date AS date,
+		`status`,
+		id AS fee_id
+	FROM
+		om_deduction_record 
+	<where>
+		AND customer_id = #{userId}
+		<![CDATA[ AND `status` <> 0 ]]>
+	</where>
+	ORDER BY date DESC
+  </select>
+  
+</mapper>

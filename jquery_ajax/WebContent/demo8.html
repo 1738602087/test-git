@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>案例-显示商品信息</title>
+    <script type="text/javascript" src="/jquery_ajax/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript">
+        /*  1. 创建一个html页面，页面上有一个”显示商品”连接
+            2.	当我们点击页面上的连接时，向服务器发送ajax请求，获取商品信息.
+            3.	服务器得到商品信息List<Product>,将集合信息转换成json响应到浏览器端。
+            4.	在页面上来处理服务器响应回来的数据。
+         */
+        //页面加载完成后执行函数
+        $(function(){
+
+            //当我们页面加载完成之后，我们首先将div隐藏
+            $("#content").hide();
+            /*这里我们给我们的a标签进行jquery事件到的绑定的时候我们需要1：将我们页面中的DOM元素获取到，并且
+            * 将DOM对象转换成jquery对象使用$()，即我们$("#a")就是根据 id 查询标签对象得到的是一个jquery对象，
+            * 2：我们进行jquery的事件绑定，这里我们使用了toggle而没有使用这个click,因为我们在描述中说到我们点击这个
+            * 展示商品信息一次就从服务器端获取数据进行页面填充和展示，当我们再次点击这个商品信息的时候就把这个商品信息
+            * 隐藏起来，所以这里我们使用click不合适，使用toggle，toggle用于绑定两个或多个事件处理器函数，
+            * 以响应被选元素的轮流的 click 事件。如果元素是可见的，切换为隐藏的；如果元素是隐藏的，切换为可见的。
+            * 所以在这里我们toggle事件所对应的回调函数中我们写了两个回调函数，其中第一个回调函数用户向服务器发送
+            * 异步ajax请求，得到商品信息，在页面中进行展示，第二个回调函数用于将商品信息进行隐藏， 而这里我们当前的商品
+            * 信息应该怎么展示我们就是在我们的页面中写一个div块标签并且给他设置一个id属性，将我们从服务器端返回的数据
+            * 填充到这个div中，这里我们的服务器端代码也需要有，这里我们通过这个servlet来做服务器端，来处理我们当前页
+            * 面的请求，这样我们把数据查询出来，这里我们就不通过这个查询数据库得到数据，我们直接在我们的servlet中虚拟
+            * 一些数据，返回到前台页面中进行展示。    这里我们向服务器端发送ajax请求的方式有很多，这里我们使用post方式向
+            * 服务器端发送ajax异步请求，这里我们请求服务器端的servlet也就是我们的这个/jquery_ajax/productservlet,
+            * 即当前项目下面的这个productServlet。这里我们向服务器端发送的请求参数是没有的，所以我们的post请求参数中
+            * 可以不传， 最后"json"也就是代表我们前台页面希望服务器端处理之后返回给前台页面的格式是json,
+    */
+            /*当我们点击显示商品信息的a标签的时候就会向服务器发送ajax异步请求，从服务器端
+            * 获取数据，之后将数据填充到html页面中，所以这里我们在发送ajax请求，拿到服务器
+            * 返回的数据并且进行填充之后我们需要重新设置这个div显示*/
+
+            $("#a").toggle(function(){
+                //向服务器发送请求，得到商品信息，在页面上展示
+                var url="/jquery_ajax/product";
+                $.post(url,function(data){
+                    //alert(data); //[object Object],[object Object]
+                    /*对服务器端返回的数据进行处理其实在开发中这一步的步骤是最繁琐的，因为
+                    * 我们在这里我们前台页面拿到的是服务器端返回的json数据，*/
+                    var jsonObj=eval(data);
+                    //alert(jsonObj); //[object Object],[object Object]
+                    alert(JSON.stringify(data));
+                    /*[{"count":100,"id":1,"name":"电视机","price":2000},{"count":200,"id":2,"name":"洗衣机","price":1000}]*/
+                    //[{"count":100,"id":1,"name":"电视机","price":2000},{"count":200,"id":2,"name":"洗衣机","price":1000}]
+
+                    //处理响应json数据，这里我们处理响应数据我们也可以采用这个html拼接字符串的方法
+                    var table="<table border=1>" +
+                                   "<tr>" +
+                                         "<td>编号</td>"+
+                                         "<td>名称</td>"+
+                                         "<td>数量</td>"+
+                                         "<td>价格</td>"+
+                                    "</tr>";
+                    /*对服务器端返回的json数组(json数组中的每一个元素都是对象)进行遍历*/
+                    for( var i=0;i<jsonObj.length;i++){
+                        //得到服务器端返回的json数组中的每一个对象
+                        var obj=jsonObj[i];
+                        //将json数组中遍历得到的每一个json对象填充到我们的tr标签也就是
+                        //将一个对象封装到一行记录里面。
+                         table+="<tr><td>"+obj.id+"</td><td>"+obj.name+"</td><td>"+obj.count+"</td><td>"+obj.price+"</td></tr>";
+
+
+                    }
+                    table += "</table>";
+                    //设置我们div起始标签和结束标签中的内容。
+                    $("#content").html(table);
+
+                    //显示div
+                    $("#content").fadeIn(1500);
+
+                },"json");
+
+            },function(){
+                /*当我们页面显示数据之后我们再次点击这个显示商品信息的a标签的时候我们应该
+                设置这个商品信息隐藏，注意这里隐藏我们不仅仅要把这个div隐藏，而且我们还要把
+                这个div的内容清空。*/
+                //将商品的信息隐藏
+                //将div隐藏
+                $("#content").fadeOut(1500);
+                //清空div
+                $("#content").html("");
+            });
+        });
+    </script>
+</head>
+<body>
+<!--在这个页面中我们应该首先有一个超链接，我们给它设置一个id属性，用于绑定jquery事件。-->
+<a href="javascript:void(0)" id="a">显示商品信息</a>
+<hr>
+<div id="content">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+V
+java:S1128";Remove this unused import 'javax.servlet.http.HttpServlet'.(û÷Å›ÿÿÿÿÿ
+j
+java:S1128
+"ORemove this unused import 'com.fasterxml.jackson.core.JsonProcessingException'.(ßÔïÇûÿÿÿÿ
+W
+java:S1854C"<Remove this useless assignment to local variable "pageBean".(¦¬Ýšøÿÿÿÿ
+’
+java:S1130"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(æ¥ìôúÿÿÿÿ
+O
+java:S4719F"9Replace charset name argument with StandardCharsets.UTF_8(³Úúú
+T
+java:S4719F">Replace charset name argument with StandardCharsets.ISO_8859_1(³Úúú
+Q	java:S125M"<This block of commented-out lines of code should be removed.(›¹½î
+
+java:S1130u"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(²Ôõæ
+“
+java:S1130•"wRemove the declaration of thrown exception 'javax.servlet.ServletException', as it cannot be thrown from method's body.(ð‡±ºþÿÿÿÿ
+ˆ
+java:S1130•"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(ð‡±ºþÿÿÿÿ

@@ -1,0 +1,7 @@
+
+e
+java:S1192G"JUse already-defined constant 'USER' instead of duplicating its value here.(Š¤çƒüÿÿÿÿ
+e
+java:S1192"JDefine a constant instead of duplicating this literal "mail.user" 3 times.(‰Üáàúÿÿÿÿ
+‡
+java:S1130F"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(áÿ‰Ôüÿÿÿÿ

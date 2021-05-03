@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>案例-省市二级联动</title>
+<script type="text/javascript" src="/jquery_ajax/js/jquery-1.8.3.js"></script>
+<script type="text/javascript">
+	$(function() {
+		//页面加载完成后向服务器发送请求来获取省份信息--不带参数 这个post请求是直接页面加载完毕
+		//后就开始执行。而我们下面定义的从服务器端获取城市信息的ajax异步请求只有当jquery对象
+		//绑定的事件触发了才会向服务器端发送ajax异步请求。
+		var url = "/jquery_ajax/city";
+		/*这里我们注意的当我们需要在请求的url地址栏中进行参数的拼接的时候我们都是直接写上一个英文的?
+		* 之后再跟上我们的拼接的参数名=参数值，如果拼接的参数键值对有多个，我们就可以使用这个&进行分割
+		* 。这里我们请求的url也就是我们上面定义的字符串，这里如果请求的url携带的有参数我们就需要自己进行这个
+		* 参数的拼接，涉及到字符串的拼接我们使用+进行连接。*/
+		$.post(url + "?method=pro", function(data) {
+			//data [{"id":1,"name":"黑龙江"},{"id":3,"name":"辽宁"},{"id":2,"name":"吉林"}]
+			//这里我们得到的data也就是服务器端返回的json的字符串，json字符串不是js对象，所以
+			//我们需要通过这个eval函数将json字符串变成一个js对象。
+			var jsonObj = eval(data);
+			//我们把js对象DOM对象转换为jquery对象，之后使用jquery的each方法来jquery对象遍历
+			$(jsonObj).each(function() {
+			    /*这里我们第一次遍历this就代表的是{"id":1,"name":"黑龙江"}对象，第二次遍历
+			    * this就代表的是{"id":3,"name":"辽宁"}这个对象，以此类推
+			    * 我们下面的城市信息的执行流程和这个是类似的*/
+				//得到省份名称
+				var pname = (this.name);
+				//转换成jquery对象
+				$("#province").append($("<option>" + pname + "</option>"));
+
+			});
+
+		}, "json");
+
+		//当选择了省份时，它也需要向服务器端发送ajax异步请求，这里我们就可以知道当我们页面加载
+		//完毕后，我们就会首先向服务器端发送一个ajax异步请求，从服务器端获取这个省份信息数据，
+		//当选择了某一个黑龙江，吉林或者辽宁之后，就会重新向服务器端发送ajax来获取这个城市信息，
+		//这里因为我们获取省份信息和获取城市信息所请求的url都是对应于同一个url，所以我们应该怎样
+		// 进行区别，这里我们就是通过请求的url是否带有参数来进行解决，我们上面的页面加载完成后获取
+		//省份信息的ajax请求的url并没有携带参数，而我们的这个获取城市信息的url是一定能要携带这个
+		//用户第一次选择的这个省份信息，然后根据这个省份信息遍历出我们城市信息列表供用户进行选择
+		//由于都是向同一个servlet发送请求，所以我们就需要通过这个在请求的url中加上一个请求参数来判断用户
+		//所做的操作到底是获取省份信息还是获取省份所对应的城市信息，这里也就是我们通过在这个获取省份信息
+		//中的请求url我们通过这个"?method=pro"来表示我们请求获取的是省份信息，通过在请求的
+		//url中添加上这个"?method=city"来表示用户这次请求用于获取的是省份所对应的城市信息，即我们虽然请求的
+		//是同一个url,但是我们却可以根据这个method属性所对应的属性值来判断这个用户当前操作是获取省份还是
+		//获取城市。   这里我们事件的绑定是jquery的事件绑定。
+		$("#province").change(function() {
+			
+			//清理城市下拉框
+			$("#city").html("<option>--选择城市--</option>");
+			
+			//这次请求操作的作用是获取省份对应的城市信息---带参数 这里我们需要把页面加载完获取
+			//到的这个省份信息作为参数传递到我们的服务器端，
+			//获取选择的省份名称， $(this).val()获得当前Dom对象的value值（一般是表单元素）
+			//这里的$(this)也就是代表我们的这个$("#province")id选择器对象, 这个我们要注意
+			//var pname=$(this).val();
+            var pname = $("#province").val();
+			$.post(url + "?method=city",{"pname":pname},  function(data) {				
+			
+				var jsonObj=eval(data);  //[{"id":1,"name":"哈尔滨"},{"id":2,"name":"大庆"}]
+				
+				//遍历
+				$(jsonObj).each(function(){
+					var cityName=this.name; //获取城市名称
+					$("#city").append($("<option>" + cityName + "</option>"));
+				});
+
+			}, "json");
+		});
+
+	});
+</script>
+</head>
+<body>
+ <!--我们定义这个select下拉列表，下拉列表中有一个option选项，我们将来在页面上进行选择的省份信息就会填充到
+ 这个option里面。-->
+	<select id="province">
+		<option>--选择省份--</option>
+	</select>省
+
+	<select id="city">
+		<option>--选择城市--</option>
+	</select>市
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.judicial.mapper.ProtectOrderMapper">
+
+	<select id="findCustomerOrderList" resultMap="cn.repeatlink.common.mapper.EstateProtectionOrderMapper.BaseResultMap">
+		SELECT
+			*
+		FROM
+			estate_protection_order
+		<where>
+			AND customer_id = #{customerId}
+			AND set_id = #{setId}
+			<if test="status != null">
+			AND `status` = #{status}
+			</if>
+		</where>
+		order by start_date
+	</select>
+	<select id="getEstateProtectionOrderByDate" resultMap="cn.repeatlink.common.mapper.EstateProtectionOrderMapper.BaseResultMap">
+	  	SELECT
+			* 
+		FROM
+			estate_protection_order 
+		WHERE
+			customer_id = #{customerId} 
+			AND set_id = #{setId}
+			<![CDATA[ AND start_date <= #{date} AND end_date >= #{date} ]]>
+			AND `status` = #{status}
+	  </select>
+	
+</mapper>

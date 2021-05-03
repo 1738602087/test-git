@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.JudicialMapper">
+  
+  <select id="search" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.JudicialUserVo">
+    SELECT
+		user_id,
+		email,
+		fullname,
+		fullname_kana,
+		famname,
+		famname_kana,
+		givename,
+		givename_kana,
+		`status`,
+		create_time,
+		invalid_time
+	FROM
+		user_judicial 
+	<where>
+		AND group_id = #{groupId}
+		<if test="vo.status != null">
+		AND `status` = #{vo.status}
+		</if>
+		<if test="vo.fullname != null and vo.fullname != ''">
+		AND fullname like concat('%', #{vo.fullname}, '%')
+		</if>
+		<if test="vo.email != null and vo.email != ''">
+		AND email like concat('%', #{vo.email}, '%')
+		</if>
+	</where>
+  </select>
+  <select id="searchApply" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.JudicialUserApplyVo">
+  	SELECT
+		id,
+		email,
+		create_time 
+	FROM
+		law_group_code 
+	<where>
+		AND `reg_flag` = 0
+		AND group_id = #{groupId}
+		<if test="vo.email != null and vo.email != ''">
+		AND email like concat('%', #{vo.email}, '%')
+		</if>
+	</where>
+  </select>
+  
+  
+</mapper>

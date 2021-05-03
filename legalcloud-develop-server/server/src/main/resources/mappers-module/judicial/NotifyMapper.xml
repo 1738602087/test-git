@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.judicial.mapper.NotifyMapper">
+
+	<select id="findPageList" resultMap="cn.repeatlink.module.judicial.mapper.BaseMapper.NotifyRowInfo">
+		SELECT
+			n.notify_id,
+			n.title,
+			n.send_time,
+			n.`status`,
+			IF( u.user_id IS NULL, 'システム', u.fullname ) AS sender 
+		FROM
+			( SELECT * FROM app_notify WHERE receiver_id=#{userId,jdbcType=VARCHAR} 
+				<if test="vo.time != null and vo.time != '' and vo.id != null and vo.id != ''">
+				AND send_time &lt;= #{vo.time,jdbcType=VARCHAR}
+				AND notify_id &lt; #{vo.id,jdbcType=VARCHAR}
+				</if>
+				order by send_time DESC, notify_id DESC LIMIT ${vo.size} ) n
+			LEFT JOIN user_judicial u ON u.user_id = n.sender_id 
+		WHERE
+			1 =1
+			
+		ORDER BY
+			n.send_time DESC,
+			n.notify_id DESC 
+		LIMIT ${vo.size}
+	</select>
+	<select id="getNotifyDetail" resultMap="cn.repeatlink.module.judicial.mapper.BaseMapper.NotifyDetailInfo">
+		SELECT
+			n.notify_id,
+			n.title,
+			n.send_time,
+			n.`status`,
+			IF( u.user_id IS NULL, 'システム', u.fullname ) AS sender,
+			n.content 
+		FROM
+			( SELECT * FROM app_notify WHERE notify_id=#{notify_id,jdbcType=VARCHAR} ) n
+			LEFT JOIN user_judicial u ON u.user_id = n.sender_id 
+		WHERE
+			1 =1
+	</select>
+	
+</mapper>

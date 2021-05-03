@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>伪造ajax第一个小Demo</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+      /*页面加载完毕后执行函数*/
+    window.onload=function f(){
+        debugger;
+        /*我们获取到这个当前时间并且把这个当前时间赋值给这个我们的指定dom对象的内容
+        * 也就是将这个当前时间给到我们的这个span标签的内容体中*/
+        var mydate=new Date();
+        document.getElementById('currentTime').innerText= mydate.getTime();
+
+    }
+    /*当我们点击某一个事件的时候触发函数*/
+    function loadpage(){
+        /*我们首先得到这个指定dom对象的属性值，如果我们不确定结果是否正确我们打印出来就可*/
+        var targeturl = document.getElementById("url").value;
+        console.log(targeturl);
+        /*这里我们指定的dom对象的src也就是页面会跳转到这个指定的url上面
+        * 也就是这个百度网址上面，这里我们还可以更改我们的这个文本框中默认的地址
+        * 为自定义的网址，这样我们点击这个提交的时候，就会在页面中内嵌到我们指定的网
+        * 址上面比如说我们还可以跳转到这个https://www.sina.com/新浪的网址上面*/
+        document.getElementById("iframePosition").src=targeturl;
+
+    }
+   </script>
+    <div>
+        <p>请输入要加载的地址<span id="currentTime"></span></p>
+        <p>
+            <!--我们定义一个输入文本框，文本框的值默认为这个百度的网址-->
+            <input type="text" id="url" value="https://www.baidu.com/">
+            <!--定义一个提交按钮，当我点击这个按钮的时候就会触发这个loadpage函数(js函数)-->
+            <input type="button" value="提交" onclick="loadpage()">
+        </p>
+
+    </div>
+    <div>
+         <h3>加载页面的位置</h3>
+          <iframe style="width: 100%"; height="500px"; id="iframePosition">
+
+          </iframe>
+
+    </div>
+
+</body>
+</html>

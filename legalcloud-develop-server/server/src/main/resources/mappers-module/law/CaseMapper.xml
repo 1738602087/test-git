@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.repeatlink.module.law.mapper.LawCaseMapper">
+  
+  <select id="search" resultMap="cn.repeatlink.module.law.mapper.BaseMapper.CaseItemVo">
+    SELECT
+		c.case_id, c.case_name, c.start_date, c.`status`, u.fullname as assigned_to, c.complete_time 
+		, c.fetch_api, c.step_seller_verify, c.step_buyer_input, c.step_reg_finish, c.step_deal_finish
+		, GROUP_CONCAT(DISTINCT CONCAT(IFNULL(e.addr,''),IFNULL(e.addr2,''),IFNULL(e.house_id,''))) AS _estate_names
+		, GROUP_CONCAT(DISTINCT CONCAT(IFNULL(e.addr_code,''),IFNULL(e.addr2,''),IFNULL(e.house_id,''))) AS _estate_code_names
+		, GROUP_CONCAT(DISTINCT b.fullname) As _buyer_names
+		
+		, c.assigned_to AS _staff_id, c.user_judicial_id 
+	FROM
+		case_estate c
+		LEFT JOIN user_judicial u ON u.user_id = c.user_judicial_id 
+		LEFT JOIN case_estate_record e ON e.case_id = c.case_id AND e.`status` = 1
+		LEFT JOIN case_buyer b ON b.case_id = c.case_id AND b.`status` = 1
+	<where>
+		<!-- <if test="userId != null and userId != ''">
+		AND c.user_judicial_id = #{userId}
+		</if> -->
+		AND c.`status` = ${@cn.repeatlink.module.judicial.common.Constant$CaseStatus@VALID}
+		<if test="groupId != null and groupId != ''">
+		AND u.group_id = #{groupId}
+		</if>
+		<if test="finished == true">
+		AND c.`step_reg_finish` = ${@cn.repeatlink.module.judicial.common.Constant$CaseStepVal@COMPLETED}
+		</if>
+		<if test="finished != true">
+		<![CDATA[ AND c.`step_reg_finish` = ${@cn.repeatlink.module.judicial.common.Constant$CaseStepVal@DEFAULT} ]]>
+		</if>
+		<if test="vo != null">
+			<if test="vo.type == 1">
+			AND c.user_judicial_id = #{userId}
+			</if>
+			<if test="vo.case_name != null and vo.case_name != ''">
+			AND c.case_name like concat('%', #{vo.case_name}, '%')
+			</if>
+			<if test="vo.staff_name != null and vo.staff_name != ''">
+			AND (u.fullname like concat('%', #{vo.staff_name}, '%')
+				OR u.user_id = #{vo.staff_name}
+			)
+			</if>
+			<if test="vo.start_date != null and vo.start_date != ''">
+			<![CDATA[ AND DATE_FORMAT(c.`create_time`,'%Y-%m') = #{vo.start_date} ]]>
+			</if>
+			<if test="vo.end_date != null and vo.end_date != ''">
+			<![CDATA[ AND DATE_FORMAT(c.`complete_time`,'%Y-%m') = #{vo.end_date} ]]>
+			</if>
+			<if test="(vo.estate_name != null and vo.estate_name != '') or (vo.buyer_name != null and vo.buyer_name != '')">
+			AND c.case_id IN (
+				select 'test_0000000000' AS case_id 
+				<if test="vo.estate_name != null and vo.estate_name != ''">
+				UNION select case_id from case_estate_record where CONCAT(IFNULL(addr,''),IFNULL(house_id,'')) like concat('%', #{vo.estate_name}, '%') and `status` = 1
+				</if>
+				<if test="vo.buyer_name != null and vo.buyer_name != ''">
+				UNION select case_id from case_buyer where fullname like concat('%', #{vo.buyer_name}, '%') and `status` = 1
+				</if>
+			)
+			</if>
+		</if>
+		
+	</where>
+	GROUP BY c.case_id
+	ORDER BY c.create_time desc
+  </select>
+  
+</mapper>

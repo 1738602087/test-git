@@ -1,0 +1,51 @@
+1. 授权需要继承 AuthorizingRealm 类, 并实现其 doGetAuthorizationInfo 方法
+2. AuthorizingRealm 类继承自 AuthenticatingRealm(所以我们的这个 AuthorizingRealm 类
+中也就继承了父类中的doGetAuthenticationInfo(认证方法)和doGetAuthorizationInfo授权方法),
+但我们前面所说的我们认证操作所自定义的Realm类继承了这个AuthorizingRealm我们只实现
+AuthenticatingRealm 中的doGetAuthenticationInfo(认证方法),没有实现授权这个抽
+象方法， 所以认证和授权只需要继承 AuthorizingRealm 就可以了. 同时实现他的两个抽象
+方法.
+
+什么是密码的加密也就是我们实际上在数据表里面保存的不应该是明文(123456)，而应该是123456进行加密之后
+的一个字符串，而且我们还要求我们的密码加密是不可逆的，也就是由这个字符串不能够反推过来这个密码的明文。
+如果说能够反推那么这个密码的加密也就没有了意义，密码的加密方式有MD5以及这个SHA1,
+
+1. 为什么使用 MD5 盐值加密(因为如果两个人的密码一样，那么我们使用这个MD5加密算法进行加密之后所得到的这个值也是一样的
+也就是说在数据表中我们可以看到如果两个人的密码一样，那我们在数据库中的密码信息中所存放的也就是相同的字符串，这种情况也是
+有一定的不安全性的，所以我们就希望即便两个人的密码一样，最后在数据库所存放的密码字段信息也不一样，我们就需要通过这个盐值
+来进行实现):
+2. 如何做到（怎样把一个密码的明文进行MD5加密得到字符串）:
+1). 在 doGetAuthenticationInfo 方法返回值创建 SimpleAuthenticationInfo 对象的时候, 需要使用
+SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName) 构造器
+2). 使用 ByteSource.Util.bytes() 来计算盐值.
+3). 盐值需要唯一: 一般使用随机字符串或 user id
+4). 使用 new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations); 来计算盐值加密后的密码的值.
+
+1. 如何把一个字符串加密为 MD5
+2. 替换当前 Realm 的 credentialsMatcher 属性. 直接使用 HashedCredentialsMatcher 对象, 并设置加密算法即可.
+(这里我们需要注意的是如果说我们把这个credentials这个密码123456进行了MD5加密之后，然而我们从前台传过来的密码封装在这个
+UsernamePasswordToken中的密码还是这个明文，我们前端提交的这个密码应该如何进行加密成一个字符串呢，这里就需要靠这个凭证
+管理器credentialsMatcher属性，把这个属性替换成MD5credentialsMatcher属性，但是这个属性过期了，所以推荐使用这个
+HashedCredentialsMatcher设置这个加密属性），  MD5加密次数也就是说如果123456使用MD5加密一次
+之后所得到的这个字符串，那么这个字符串还是比较常见的，如果说是加密了n多次，那么这个字符串也就不容易解密、
+更加安全。
+
+
+密码的比对:
+通过 AuthenticatingRealm 的 credentialsMatcher 属性来进行的密码的比对!
+
+1. 获取当前的 Subject. 调用 SecurityUtils.getSubject();
+2. 测试当前的用户是否已经被认证. 即是否已经登录. 调用 Subject 的 isAuthenticated()
+3. 若没有被认证, 则把用户名和密码封装为 UsernamePasswordToken 对象
+1). 创建一个表单页面
+2). 把请求提交到 SpringMVC 的 Handler
+3). 获取用户名和密码.
+4. 执行登录: 调用 Subject 的 login(AuthenticationToken) 方法，我们注意到这个AuthenticationToken
+是一个接口，那么就说明我们的这个 UsernamePasswordToken是我们的这个AuthenticationToken的一个实现类.
+5. 自定义 Realm 的方法, 从数据库中获取对应的记录, 返回给 Shiro.(这块我们需要注意的是我们到底
+这样去创建我们自定义的Realm，Realm是一个接口我们真正使用的是这个接口的实现类AuthenticatingRealm 类)
+，这里我们要想知道我们为什么要实现这个接口的这个实现类的这个 doGetAuthenticationInfo(AuthenticationToken)
+方法我们就可以通过走项目源码进行分析研究。
+1). 实际上需要继承 org.apache.shiro.realm.AuthenticatingRealm 类
+2). 实现 doGetAuthenticationInfo(AuthenticationToken) 方法.
+6. 由 shiro 完成对密码的比对.
