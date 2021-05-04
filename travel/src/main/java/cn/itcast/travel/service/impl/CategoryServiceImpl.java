@@ -100,6 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findCategory(int cid) {
+        System.out.println(cid);
         return catergoryDao.findCategory(cid);
     }
 }
